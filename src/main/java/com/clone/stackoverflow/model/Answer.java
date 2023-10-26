@@ -2,6 +2,7 @@ package com.clone.stackoverflow.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,9 @@ public class Answer {
 
 	@OneToMany(mappedBy = "answer")
 	private List<Comment> comments;
+
+	@Column(name = "created_on")
+	private LocalDateTime createdOn;
 
 	public List<Comment> getComments() {
 		return comments;
@@ -70,6 +74,10 @@ public class Answer {
 	public void setView(Long view) {
 		this.view = view;
 	}
-	
+
+	@PrePersist
+	public void prePersist() {
+		createdOn = LocalDateTime.now();
+	}
 
 }

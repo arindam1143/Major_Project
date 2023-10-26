@@ -2,6 +2,8 @@ package com.clone.stackoverflow.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Comment {
     @Id
@@ -16,6 +18,9 @@ public class Comment {
     @ManyToOne
 	@JoinColumn(name = "answer_id")
     private Answer answer;
+
+	@Column(name = "created_on")
+	private LocalDateTime createdOn;
 
 	public Long getId() {
 		return id;
@@ -48,7 +53,10 @@ public class Comment {
 	public void setAnswer(Answer answer) {
 		this.answer = answer;
 	}
-    
-    
+
+	@PrePersist
+	public void prePersist() {
+		createdOn = LocalDateTime.now();
+	}
 
 }

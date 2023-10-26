@@ -2,8 +2,14 @@ package com.clone.stackoverflow.repository;
 
 import com.clone.stackoverflow.model.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question,Long> {
+    @Modifying
+    @Query("UPDATE Question q SET q.view=(q.view+1) WHERE id=:questionId  ")
+    void updateViewCount(Long questionId);
+
 }
