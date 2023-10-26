@@ -23,6 +23,7 @@ public class Question {
     private Long view;
 
     @ManyToOne
+	@JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany

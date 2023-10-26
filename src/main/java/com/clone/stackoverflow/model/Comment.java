@@ -1,10 +1,6 @@
 package com.clone.stackoverflow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Comment {
@@ -14,12 +10,11 @@ public class Comment {
     private String content;
 
     @ManyToOne
+	@JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    private Question question;
-
-    @ManyToOne
+	@JoinColumn(name = "answer_id")
     private Answer answer;
 
 	public Long getId() {
@@ -44,14 +39,6 @@ public class Comment {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Question getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(Question question) {
-		this.question = question;
 	}
 
 	public Answer getAnswer() {
