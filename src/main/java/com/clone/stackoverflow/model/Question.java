@@ -1,6 +1,7 @@
 package com.clone.stackoverflow.model;
 
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,8 @@ public class Question {
         joinColumns = @JoinColumn(name = "question_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private List<Tag> tags;
+
+    private Set<Tag> tags;
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
@@ -68,11 +70,11 @@ public class Question {
 		this.user = user;
 	}
 
-	public List<Tag> getTags() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
 
