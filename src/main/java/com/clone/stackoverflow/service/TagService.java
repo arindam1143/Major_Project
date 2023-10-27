@@ -1,6 +1,7 @@
 package com.clone.stackoverflow.service;
 
 import com.clone.stackoverflow.Repository.TagRepository;
+import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,12 +33,14 @@ public class TagService {
         return  tagRepository.findAll();
     }
     public Page<Tag> findPage(int pageNo, int pageSize, String sort ,String query) {
-        // Create a Pageable object with sorting
         Pageable pageable;
         if (sort != null) {
             switch (sort) {
                 case "titleAsc":
                     pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("name")));
+                    break;
+                case "popular" :
+                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("questions.size")));
                     break;
                 default:
                     pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("publishedDate")));
@@ -50,7 +53,7 @@ public class TagService {
             return tagRepository.searchTags(query, pageable);
         }else
 
-        return tagRepository.findAll(pageable);
+            return tagRepository.findAll(pageable);
     }
 
 }

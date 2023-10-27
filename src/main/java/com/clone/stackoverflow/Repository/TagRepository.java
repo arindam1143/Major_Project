@@ -1,5 +1,6 @@
 package com.clone.stackoverflow.Repository;
 
+import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
