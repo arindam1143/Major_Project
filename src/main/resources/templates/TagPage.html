@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tag Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: Orange;
+            color: white;
+            padding: 10px;
+        }
+        .navbar {
+            background-color: white;
+            overflow: hidden;
+        }
+        .navbar button {
+            float: right;
+            font-size: 16px;
+            color: Orange;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            border: 1px orange solid;
+        }
+        .navbar button:hover {
+            background-color: #fff;
+            color: #333;
+        }
+        .tag-container {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Prevent wrapping to the next line */
+        }
+        .tag-card {
+            display: inline-block; /* Display tags in a line */
+            margin: 0 10px; /* Add margin between tags */
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: Orange;
+            font-weight: bold;
+        }
+        a:hover {
+            color: Orange;
+        }
+    </style>
+</head>
+<body>
+<h1>Stack Overflow Tags</h1>
+<div class="navbar">
+    <form th:action="'/?start='+${pageNo}" method="get">
+        <button type="submit" name="sort" value="publishedAsc">New</button>
+        <button type="submit" name="sort" value="titleAsc">Name</button>
+    </form>
+</div>
+<div class="tag-container">
+    <div th:each="tag : ${allTags}" class="tag-card">
+        <a th:href="@{'/tags/' + ${tag.id}}"><span th:text="${tag.name}"></span></a>
+    </div>
+</div>
+<div th:if="${totalPages > 1}" class="pagination-container">
+    <div class="page-numbers">
+        <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${pageNo != i}" th:href="@{'/?start=' + ${i} +  '&sort=' + ${sortDir} }" class="page-link">[[${i}]]</a>
+            <span th:unless="${pageNo != i}" class="current-page">[[${i}]]</span>
+        </span>
+    </div>
+</div>
+</body>
+</html>

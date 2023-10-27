@@ -4,17 +4,19 @@ import com.clone.stackoverflow.model.Tag;
 import com.clone.stackoverflow.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class TagService {
     @Autowired
     private TagRepository tagRepository;
-
+    
     public Tag createTag(String tagName){
         Tag tag = new Tag();
         tag.setName(tagName);
@@ -42,4 +44,40 @@ public class TagService {
         }
         return tags;
     }
+    public Tag saveTag(String tags) {
+
+        Tag retrivedTag = tagRepository.findByName(tags);
+        if (retrivedTag != null) {
+            return retrivedTag;
+        }
+        else {
+            Tag newTag = new Tag();
+            newTag.setName(tags);
+            return tagRepository.save(newTag);
+        }
+    }
+
+    public List<Tag> getPostByTag(){
+        return  tagRepository.findAll();
+    }
+    
+    public Page<Tag> findPage(int pageNo, int pageSize, String sort) {
+        // Create a Pageable object with sorting
+        Pageable pageable;
+        if (sort != null) {
+            switch (sort) {
+                case "titleAsc":
+                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("name")));
+                    break;
+                default:
+                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("publishedDate")));
+                    break;
+            }
+        } else {
+            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("publishedDate")));
+        }
+
+        return tagRepository.findAll(pageable);
+    }
+    
 }
