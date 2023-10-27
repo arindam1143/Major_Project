@@ -37,17 +37,19 @@ private TagService tagService;
         return "redirect:/";
     }
 
-
     @GetMapping
     public String getTags(
             @RequestParam(value = "start", required = false) Integer pageNo,
-            @RequestParam(required = false, value = "sort") String order,Model model){
-        int pageSize = 10;
+            @RequestParam(required = false, value = "sort") String order,
+            @RequestParam(required = false, value = "query") String query,
+            Model model){
+        int pageSize = 4;
         if (pageNo == null) {
             pageNo = 1;
         }
-        Page<Tag> page = tagService.findPage(pageNo, pageSize, order);
+        Page<Tag> page = tagService.findPage(pageNo, pageSize, order,query);
         List<Tag> tagList = page.getContent();
+        model.addAttribute("query",query);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("totalItems", page.getTotalElements());

@@ -31,7 +31,7 @@ public class TagService {
     public List<Tag> getPostByTag(){
         return  tagRepository.findAll();
     }
-    public Page<Tag> findPage(int pageNo, int pageSize, String sort) {
+    public Page<Tag> findPage(int pageNo, int pageSize, String sort ,String query) {
         // Create a Pageable object with sorting
         Pageable pageable;
         if (sort != null) {
@@ -40,12 +40,15 @@ public class TagService {
                     pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("name")));
                     break;
                 default:
-                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("publishedDate")));
+                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("publishedDate")));
                     break;
             }
         } else {
-            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("publishedDate")));
+            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("publishedDate")));
         }
+        if(query != null){
+            return tagRepository.searchTags(query, pageable);
+        }else
 
         return tagRepository.findAll(pageable);
     }
