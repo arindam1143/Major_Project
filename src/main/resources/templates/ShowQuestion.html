@@ -7,42 +7,70 @@
 	<title>Answer Field</title>
 	<style>
 		.container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 20px;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
 		}
 
 		.answer-field {
-		background-color: #fff;
-		padding: 20px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		}
 
 		h2 {
-		font-size: 18px;
-		margin-top: 0;
+			font-size: 18px;
+			margin-top: 0;
 		}
 
 		textarea {
-		width: 95%;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		resize: vertical;
+			width: 95%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			resize: vertical;
 		}
 
 		button {
-		background-color: #0077cc;
-		color: #fff;
-		border: none;
-		border-radius: 5px;
-		padding: 10px 20px;
-		margin-top: 10px;
-		cursor: pointer;
+			background-color: #0077cc;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			margin-top: 10px;
+			cursor: pointer;
 		}
 
+		.answer-thread {
+			margin-top: 20px;
+			padding: 10px;
+			border: 1px solid #e0e0e0;
+			border-radius: 5px;
+			background-color: #f9f9f9;
+		}
+
+		.answer {
+			display: flex;
+			align-items: flex-start;
+			margin-bottom: 10px;
+		}
+
+		.answer-content {
+			flex: 1;
+		}
+
+		.answer-content p {
+			margin: 0;
+		}
+
+		/* Style the nested structure to create a thread-like appearance */
+		.answer-thread .answer {
+			margin-left: 20px;
+		}
+
+		/* Add additional styles as needed for user information, voting, and other features */
 	</style>
 </head>
 
@@ -50,15 +78,45 @@
 	<div class="container">
 		<div class="answer-field">
 			<h2>Your Answer</h2>
-			<div  th:each="question : ${questions}">
-                <h2><a th:href="@{'/question?id=' + ${question.id}}" th:text="${question.title}"></a></h2>
-                <p th:text="${question.content}"></p>
-            </div>
-			<form th:action="@{/submit}" method="post">
-				<textarea name="answer" id="answer" rows="6" placeholder="Write your answer here"></textarea>
-				<button type="submit">Post Your Answer</button>
-			</form>
+			<div th:each="question : ${questions}">
+				<h2><a th:href="@{'/question?id=' + ${question.id}}" th:text="${question.title}"></a></h2>
+				<p th:text="${question.content}"></p>
+				<div class="answer-thread" th:each="anslist : ${anslist}">
+					<div class="answer">
+						<div class="user-info">
+
+						</div>
+						<div class="answer-content">
+							<p th:text="${anslist.content}"></p>
+						</div>
+					</div>
+				    <form action="/deleteans" method="post">
+						<input type="hidden" name="id" th:value=${anslist.id} />
+						<input type="hidden" name="qid" th:value=${question.id} />
+						
+						<input type="submit" value="Delete"/>
+					</form>
+					<br>
+					<form action="/updateans" method="post">
+						<input type="hidden" name="id" th:value=${anslist.id} />
+						<input type="hidden" name="qid" th:value=${question.id} />
+						
+						<input type="submit" value="update"/>
+					</form>
+					<br>
+					<a href="#">add comments</a>
+				</div>
+
+			</div>
 		</div>
+		<form th:action="@{/saveanswer}" method="post">
+			<textarea name="answer" id="answer" rows="6" placeholder="Write your answer here"></textarea>
+			<div th:each="question : ${questions}">
+				<input type="hidden" name="id" th:value=${question.id} />
+			</div>
+			<button type="submit">Post Your Answer</button>
+		</form>
+	</div>
 	</div>
 </body>
 

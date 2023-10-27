@@ -1,6 +1,9 @@
 package com.clone.stackoverflow.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +18,19 @@ public class Tag {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Question> questions;
+	private LocalDate publishedDate = LocalDate.now();
+
+
+	public LocalDate getPublishedDate() {
+		return publishedDate;
+	}
+
+	public void setPublishedDate(LocalDate publishedDate) {
+		this.publishedDate = publishedDate;
+	}
+
+	@ManyToMany(mappedBy = "tags")
+    private Set<Question> questions;
 
 	public Long getId() {
 		return id;
@@ -26,6 +40,7 @@ public class Tag {
 		this.id = id;
 	}
 
+
 	public String getName() {
 		return name;
 	}
@@ -34,11 +49,11 @@ public class Tag {
 		this.name = name;
 	}
 
-	public List<Question> getQuestions() {
+	public Set<Question> getQuestions() {
 		return questions;
 	}
+	public void setQuestions(Set<Question> questions) {
 
-	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
 

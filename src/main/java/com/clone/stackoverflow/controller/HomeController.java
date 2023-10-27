@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.clone.stackoverflow.Repository.AnswerRepository;
 import com.clone.stackoverflow.Repository.QuestionRepository;
 import com.clone.stackoverflow.Repository.UserRepository;
+import com.clone.stackoverflow.model.Answer;
 import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.User;
 import com.clone.stackoverflow.service.HomeService;
@@ -26,12 +28,18 @@ public class HomeController {
 	HomeService homeService;
 	@Autowired
 	QuestionRepository questionRepository;
+	@Autowired
+	AnswerRepository answerRepository;
+	
+	@GetMapping("/demo")
+	public String open() {
+		return "Home";
+	}
 	
 	@GetMapping("/home")
 	public String Home(Model model) {
 		
 		List<Question> question=questionRepository.findAll();
-		//System.out.print(question.size()+"size of list");
 		model.addAttribute("questions",question);
 		return "HomePage";
 	}
@@ -39,6 +47,8 @@ public class HomeController {
 	public String QuestionPage(@RequestParam("id") Long id,Model model) {
 		Question question=questionRepository.findById(id).get();
 		model.addAttribute("questions",question);
+		List<Answer> anslist=question.getAnswers();
+		model.addAttribute("anslist",anslist);
 		
 		return "ShowQuestion";
 	}
@@ -73,8 +83,24 @@ public class HomeController {
 	public String Search(@RequestParam("search") String searchText,Model model) {
 		Set<Question> setofQuestion= homeService.searchQuestion(searchText);
 		model.addAttribute("questions",setofQuestion);
-		System.out.println("this is home controller");
-		return "redirect:/home";
+		//System.out.println("this is home controller");
+		return "HomePage";
 	}
+	@PostMapping("/saveanswer")
+	public String SaveAnswer(
+			@RequestParam("answer") String answer,
+			@RequestParam("id") Long id,Model model) {
+		Question question=questionRepository.findById(id).get();
+		Answer ansobj=new Answer();
+		ansobj.setContent(answer);
+		ansobj.prePersist();
+		ansobj.setQuestion(question);
+		answerRepository.save(ansobj);
+		model.addAttribute("answer",ansobj);
+		
+		return "redirect:/question?id="+id;
+	}
+	
+	
 
 }
