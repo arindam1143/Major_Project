@@ -29,8 +29,9 @@ public class QuestionController {
 
     @PostMapping("/create")
     public String createQuestion(@ModelAttribute Question question, @RequestParam String tagString, Model model) {
-        model.addAttribute("question", questionService.createQuestion(question, tagString));
-        return "Question";
+        Question createdQuestion = questionService.createQuestion(question, tagString);
+        model.addAttribute("question", createdQuestion);
+        return "redirect:/question?id="+createdQuestion.getId();
     }
 
     @GetMapping("/{questionId}")

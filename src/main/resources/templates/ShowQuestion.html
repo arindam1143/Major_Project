@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Stack Overflow Question</title>
+	<!-- Option 1: Include in HTML -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+	<style>
+		body {
+           margin: 0;
+           font-family: Arial, sans-serif;
+       }
+
+       .navbar {
+           background-color: #ebe7e7;
+           overflow: hidden;
+           border-top: 5px solid orange;
+       }
+
+       .navbar a {
+           float: left;
+           display: block;
+           color: #030303;
+           text-align: center;
+           padding: 14px 16px;
+           text-decoration: none;
+       }
+
+       .navbar a:hover {
+           background-color: #444;
+       }
+
+       .navbar a.logo {
+           font-size: 24px;
+           font-weight: bold;
+       }
+
+       .navbar a.right {
+           float: right;
+       }
+
+       .search-container {
+           float: left;
+       }
+       .search-container{
+           display: flex;
+           width: 50%;
+       }
+       .search-container input[type="text"] {
+           padding: 10px;
+           margin-top: 10px;
+           margin-right: 10px;
+           margin-left: 20px;
+           border: none;
+       }
+
+       .search-container button {
+           display: inline;
+           padding: 10px;
+           margin-top: 10px;
+           background: #0077cc;
+           border: none;
+           cursor: pointer;
+           color: #fff;
+       }
+       .question-container{
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+       }
+       body {
+           font-family: Arial, sans-serif;
+           margin: 0;
+           padding: 0;
+       }
+
+       .question {
+           margin: 0 auto;
+           padding: 20px;
+           width: 50%;
+       }
+
+       .answer {
+           border: 1px solid #ccc;
+           padding: 10px;
+           margin: 10px 0;
+           width: 50%;
+       }
+       span{
+           font-size: smaller;
+           color: rgb(82, 82, 82);
+       }
+       #lines{
+           width: 90%;
+           border: none;
+           height: 0.8px;
+           background-color: #cac7c7;
+           margin-left: 0px;
+       }
+       .vote-container {
+           display: flex;
+           align-items: center;
+       }
+
+       .vote-button {
+           background-color: #fff;
+           color: #030303;
+           border: none;
+           cursor: pointer;
+       }
+
+       .vote-count {
+           font-size: 24px;
+           margin: 0 10px;
+       }
+	</style>
+</head>
+<body>
+<div class="navbar">
+	<a href="#" class="logo">Stack Overflow</a>
+	<a href="#">Questions</a>
+	<a href="#">Tags</a>
+	<a href="#">Users</a>
+	<div class="search-container">
+		<input type="text" placeholder="Search...">
+		<button type="submit">Search</button>
+	</div>
+	<a href="#" class="right">Ask Question</a>
+</div>
+<div class="question-container">
+	<div class="question">
+		<h1><span th:text="${questions.title}"></h1>
+		<span th:text="'Asked on '+${#temporals.format(questions.createdOn, 'dd/MMM/yyy HH:mm')} "></span>
+		&nbsp;&nbsp;<span th:text="'Viewed '+${questions.view}+' times'"></span>
+		&nbsp;&nbsp;
+			<span>Asked By: Harsh</span>
+		<hr>
+		<br>
+		<p th:text="${questions.content}"></p>
+		<div class="vote-container">
+			<button class="vote-button" id="upvote">
+				<h2><i class="bi bi-caret-up-fill"></i></h2>
+			</button>
+			<span class="vote-count" id="vote-count">0</span>
+			<button class="vote-button" id="downvote">
+				<h2><i class="bi bi-caret-down-fill"></i></h2>
+			</button>
+		</div>
+		<br>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+	</div>
+	<br>
+	<br>
+	<h2 style="align-self:flex-start;margin-left: 375px;">Answers</h2>
+	<div class="answer">
+		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
+		<p>Creating a simple HTML page is easy. Just follow these steps:</p>
+		<ol>
+			<li>Open a text editor like Notepad.</li>
+			<li>Write your HTML code, e.g., &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;My First Page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</li>
+			<li>Save the file with a .html extension.</li>
+			<li>Open the saved file in a web browser.</li>
+		</ol>
+		<div class="vote-container">
+			<button class="vote-button" id="upvote">
+				<h2><i class="bi bi-caret-up-fill"></i></h2>
+			</button>
+			<span class="vote-count" id="vote-count">0</span>
+			<button class="vote-button" id="downvote">
+				<h2><i class="bi bi-caret-down-fill"></i></h2>
+			</button>
+		</div>
+		<br>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+	</div>
+	<div class="answer">
+		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
+		<p>Creating a simple HTML page is easy. Just follow these steps:</p>
+		<ol>
+			<li>Open a text editor like Notepad.</li>
+			<li>Write your HTML code, e.g., &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;My First Page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</li>
+			<li>Save the file with a .html extension.</li>
+			<li>Open the saved file in a web browser.</li>
+		</ol>
+		<div class="vote-container">
+			<button class="vote-button" id="upvote">
+				<h2><i class="bi bi-caret-up-fill"></i></h2>
+			</button>
+			<span class="vote-count" id="vote-count">0</span>
+			<button class="vote-button" id="downvote">
+				<h2><i class="bi bi-caret-down-fill"></i></h2>
+			</button>
+		</div>
+		<br>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+	</div>
+	<div class="answer">
+		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
+		<p>Creating a simple HTML page is easy. Just follow these steps:</p>
+		<ol>
+			<li>Open a text editor like Notepad.</li>
+			<li>Write your HTML code, e.g., &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;My First Page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</li>
+			<li>Save the file with a .html extension.</li>
+			<li>Open the saved file in a web browser.</li>
+		</ol>
+		<div class="vote-container">
+			<button class="vote-button" id="upvote">
+				<h2><i class="bi bi-caret-up-fill"></i></h2>
+			</button>
+			<span class="vote-count" id="vote-count">0</span>
+			<button class="vote-button" id="downvote">
+				<h2><i class="bi bi-caret-down-fill"></i></h2>
+			</button>
+		</div>
+		<br>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+	</div>
+</div>
+
+</body>
+</html>

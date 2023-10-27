@@ -10,6 +10,7 @@ public class Answer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "content",columnDefinition = "text")
 	private String content;
 	private Long view;
 
@@ -26,6 +27,14 @@ public class Answer {
 
 	@Column(name = "created_on")
 	private LocalDateTime createdOn;
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
 
 	public List<Comment> getComments() {
 		return comments;

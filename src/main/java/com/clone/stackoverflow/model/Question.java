@@ -14,6 +14,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+	@Column(name = "content",columnDefinition = "text")
     private String content;
     private Long view;
     private Long upVote;
@@ -31,11 +32,21 @@ public class Question {
         joinColumns = @JoinColumn(name = "question_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-
     private Set<Tag> tags;
+
+	@OneToMany(mappedBy = "question")
+	private List<Comment> comments;
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public Long getUpVote() {
 		return upVote;

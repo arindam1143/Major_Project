@@ -4,9 +4,9 @@ import com.clone.stackoverflow.model.Tag;
 import com.clone.stackoverflow.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,9 +32,9 @@ public class TagService {
         }
     }
 
-    public List<Tag> getPostTags(String tagString){
+    public Set<Tag> getPostTags(String tagString){
         String[] tagNameList = tagString.split(",");
-        ArrayList<Tag> tags = new ArrayList<>();
+        Set<Tag> tags = new HashSet<>();
         for(String tagName:tagNameList){
             Tag tag = tagRepository.findByName(tagName);
             if(tag==null){
