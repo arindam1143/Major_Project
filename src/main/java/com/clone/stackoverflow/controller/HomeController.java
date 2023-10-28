@@ -1,7 +1,8 @@
 package com.clone.stackoverflow.controller;
 
+import java.util.List;
+import java.util.Set;
 
-import com.clone.stackoverflow.repository.AnswerRepository;
 import com.clone.stackoverflow.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,17 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.clone.stackoverflow.repository.AnswerRepository;
 import com.clone.stackoverflow.repository.UserRepository;
-
 import com.clone.stackoverflow.model.Answer;
 import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.User;
 import com.clone.stackoverflow.service.HomeService;
-
 import org.springframework.ui.Model;
-
-import java.util.List;
-import java.util.Set;
 
 
 @Controller
@@ -33,7 +30,7 @@ public class HomeController {
 	@Autowired
 	AnswerRepository answerRepository;
 	
-	@GetMapping("/demo")
+	@GetMapping("/")
 	public String open() {
 		return "Home";
 	}
@@ -46,12 +43,13 @@ public class HomeController {
 		return "HomePage";
 	}
 	@GetMapping("/question")
-	public String QuestionPage(@RequestParam(value = "id") Long id,Model model) {
+	public String QuestionPage(@RequestParam("id") Long id,Model model) {
 		questionRepository.updateViewCount(id);
 		Question question=questionRepository.findById(id).get();
 		model.addAttribute("questions",question);
 		List<Answer> anslist=question.getAnswers();
 		model.addAttribute("anslist",anslist);
+		
 		return "ShowQuestion";
 	}
 	@GetMapping("/signup")

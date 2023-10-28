@@ -49,10 +49,10 @@ public class AnswerController {
 			@RequestParam("id") Long id,
 			@RequestParam("answer") String updateanswer) {
 		Answer answer=answerRepository.findById(id).get();
-		System.out.println(updateanswer);
+//		System.out.println(updateanswer);
 		answer.setContent(updateanswer);
 		answerRepository.save(answer);
-		return "HomePage";
+		return "redirect:/question?id="+answer.getQuestion().getId();
 	}
 
 }

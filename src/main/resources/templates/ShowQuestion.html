@@ -118,15 +118,25 @@
 </head>
 <body>
 <div class="navbar">
-	<a href="#" class="logo">Stack Overflow</a>
-	<a href="#">Questions</a>
-	<a href="#">Tags</a>
+	<a href="/" class="logo">Stack Overflow</a>
+	<a href="/home">Questions</a>
+	<a href="/tags/">Tags</a>
 	<a href="#">Users</a>
-	<div class="search-container">
+	<form th:action="@{/search}" method="get">
+		<div class="search-container">
+			<!--<input type="text" placeholder="Search...">
+        <button type="submit">Search</button>-->
+			
+				<input type="text" name="search" placeholder="Search...">
+				<button type="submit">Search</button>
+			
+		</div>
+		</form>
+	<!--<div class="search-container">
 		<input type="text" placeholder="Search...">
 		<button type="submit">Search</button>
-	</div>
-	<a href="#" class="right">Ask Question</a>
+	</div>-->
+	<a href="/questions/ask" class="right">Ask Question</a>
 </div>
 <div class="question-container">
 	<div class="question">
@@ -159,7 +169,7 @@
 	<h2 style="align-self:flex-start;margin-left: 375px;">Answers</h2>
 	<div class="answer" th:each="answer:${anslist}">
 		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
-		<p th:text="${anslist.content}"></p>
+		<p th:text="${answer.content}"></p>
 		<div class="vote-container">
 			<button class="vote-button" id="upvote">
 				<h2><i class="bi bi-caret-up-fill"></i></h2>
@@ -169,15 +179,15 @@
 				<h2><i class="bi bi-caret-down-fill"></i></h2>
 			</button>&nbsp;&nbsp;
 			<form action="/deleteans" method="post">
-				<input type="hidden" name="id" th:value=${anslist.id} />
-				<input type="hidden" name="qid" th:value=${question.id} />
+				<input type="hidden" name="id" th:value=${answer.id} />
+				<input type="hidden" name="qid" th:value=${questions.id} />
 
 				<input type="submit" value="Delete"/>
 			</form>
 			&nbsp;&nbsp;
 			<form action="/updateans" method="post">
-				<input type="hidden" name="id" th:value=${anslist.id} />
-				<input type="hidden" name="qid" th:value=${question.id} />
+				<input type="hidden" name="id" th:value=${answer.id} />
+				<input type="hidden" name="qid" th:value=${questions.id} />
 
 				<input type="submit" value="update"/>
 			</form>
