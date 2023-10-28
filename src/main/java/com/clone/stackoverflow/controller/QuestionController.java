@@ -43,9 +43,10 @@ public class QuestionController {
 //	    	Set<Tag> tagsValue = Arrays.stream(tagString.split(",")).map(tagName -> tagService.saveTag(tagName.trim()))
 //	                .collect(Collectors.toSet());
 //	        question.setTags(tagsValue);
-	        model.addAttribute("questions", questionService.createQuestion(question, tagString));
+	    	Question savedQuestion =questionService.createQuestion(question, tagString);
+	        model.addAttribute("questions", savedQuestion);
 	         
-	        return "ShowQuestion";
+	        return "redirect:/question?id="+savedQuestion.getId();
 	    }
 
 	    @GetMapping("/{questionId}")

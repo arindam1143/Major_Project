@@ -133,22 +133,23 @@
 </head>
 <body>
 <h1>Stack Overflow Tags</h1>
+
 <h2>Tags</h2>
 <h3>A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question</h3>
 <div class="navbar">
     <div class="search-bar">
-        <form th:action="@{/}" method="get">
+        <form th:action="@{/tags/}" method="get">
             <input type="text" name="query" placeholder="Search tags..." />
             <button type="submit">Search</button>
         </form>
     </div>
-    <form th:action="'/?start='+${pageNo}" method="get">
+    <form th:action="'/tags/?start='+${pageNo}" method="get">
         <input type="hidden" name="query" th:value="${query}" />
         <button type="submit" name="sort" value="publishedDesc">New</button>
         <button type="submit" name="sort" value="titleAsc">Name</button>
         <button type="submit" name="sort" value="popular">Popular</button>
     </form>
-    <a href="/"><button type="submit" >All Tags</button></a>
+    <a href="/tags/"><button type="submit" >All Tags</button></a>
 </div>
 <div class="tag-container">
     <div th:each="tag : ${allTags}" class="tag-card">
@@ -172,7 +173,7 @@
 <div th:if="${totalPages > 1}" class="pagination-container">
     <div class="page-numbers">
         <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-            <a th:if="${pageNo != i}" th:href="@{'/?start=' + ${i} +  '&sort=' + ${sortDir} }" class="page-link">[[${i}]]</a>
+            <a th:if="${pageNo != i}" th:href="@{'/tags/?start=' + ${i} +  '&sort=' + ${sortDir} }" class="page-link">[[${i}]]</a>
             <span th:unless="${pageNo != i}" class="current-page">[[${i}]]</span>
         </span>
     </div>

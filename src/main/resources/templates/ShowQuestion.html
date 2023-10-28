@@ -1,123 +1,213 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Answer Field</title>
+	<title>Stack Overflow Question</title>
+	<!-- Option 1: Include in HTML -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 	<style>
-		.container {
-			max-width: 800px;
-			margin: 0 auto;
-			padding: 20px;
-		}
+		body {
+           margin: 0;
+           font-family: Arial, sans-serif;
+       }
 
-		.answer-field {
-			background-color: #fff;
-			padding: 20px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
+       .navbar {
+           background-color: #ebe7e7;
+           overflow: hidden;
+           border-top: 5px solid orange;
+       }
 
-		h2 {
-			font-size: 18px;
-			margin-top: 0;
-		}
+       .navbar a {
+           float: left;
+           display: block;
+           color: #030303;
+           text-align: center;
+           padding: 14px 16px;
+           text-decoration: none;
+       }
 
-		textarea {
-			width: 95%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			resize: vertical;
-		}
+       .navbar a:hover {
+           background-color: #444;
+       }
 
-		button {
-			background-color: #0077cc;
-			color: #fff;
-			border: none;
-			border-radius: 5px;
-			padding: 10px 20px;
-			margin-top: 10px;
-			cursor: pointer;
-		}
+       .navbar a.logo {
+           font-size: 24px;
+           font-weight: bold;
+       }
 
-		.answer-thread {
-			margin-top: 20px;
-			padding: 10px;
-			border: 1px solid #e0e0e0;
-			border-radius: 5px;
-			background-color: #f9f9f9;
-		}
+       .navbar a.right {
+           float: right;
+       }
 
-		.answer {
-			display: flex;
-			align-items: flex-start;
-			margin-bottom: 10px;
-		}
+       .search-container {
+           float: left;
+       }
+       .search-container{
+           display: flex;
+           width: 50%;
+       }
+       .search-container input[type="text"] {
+           padding: 10px;
+           margin-top: 10px;
+           margin-right: 10px;
+           margin-left: 20px;
+           border: none;
+           width:100%;
+       }
 
-		.answer-content {
-			flex: 1;
-		}
+       .search-container button {
+           display: inline;
+           padding: 10px;
+           margin-top: 10px;
+           background: #0077cc;
+           border: none;
+           cursor: pointer;
+           color: #fff;
+       }
+       .question-container{
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+       }
+       body {
+           font-family: Arial, sans-serif;
+           margin: 0;
+           padding: 0;
+       }
 
-		.answer-content p {
-			margin: 0;
-		}
+       .question {
+           margin: 0 auto;
+           padding: 20px;
+           width: 50%;
+       }
 
-		/* Style the nested structure to create a thread-like appearance */
-		.answer-thread .answer {
-			margin-left: 20px;
-		}
+       .answer {
+           border: 1px solid #ccc;
+           padding: 10px;
+           margin: 10px 0;
+           width: 50%;
+       }
+       span{
+           font-size: smaller;
+           color: rgb(82, 82, 82);
+       }
+       #lines{
+           width: 90%;
+           border: none;
+           height: 0.8px;
+           background-color: #cac7c7;
+           margin-left: 0px;
+       }
+       .vote-container {
+           display: flex;
+           align-items: center;
+       }
 
-		/* Add additional styles as needed for user information, voting, and other features */
+       .vote-button {
+           background-color: #fff;
+           color: #030303;
+           border: none;
+           cursor: pointer;
+       }
+
+       .vote-count {
+           font-size: 24px;
+           margin: 0 10px;
+       }
 	</style>
 </head>
-
 <body>
-	<div class="container">
-		<div class="answer-field">
-			<h2>Your Answer</h2>
-			<div th:each="question : ${questions}">
-				<h2><a th:href="@{'/question?id=' + ${question.id}}" th:text="${question.title}"></a></h2>
-				<p th:text="${question.content}"></p>
-				<div class="answer-thread" th:each="anslist : ${anslist}">
-					<div class="answer">
-						<div class="user-info">
-
-						</div>
-						<div class="answer-content">
-							<p th:text="${anslist.content}"></p>
-						</div>
-					</div>
-				    <form action="/deleteans" method="post">
-						<input type="hidden" name="id" th:value=${anslist.id} />
-						<input type="hidden" name="qid" th:value=${question.id} />
-						
-						<input type="submit" value="Delete"/>
-					</form>
-					<br>
-					<form action="/updateans" method="post">
-						<input type="hidden" name="id" th:value=${anslist.id} />
-						<input type="hidden" name="qid" th:value=${question.id} />
-						
-						<input type="submit" value="update"/>
-					</form>
-					<br>
-					<a href="#">add comments</a>
-				</div>
-
-			</div>
+<div class="navbar">
+	<a href="/" class="logo">Stack Overflow</a>
+	<a href="/home">Questions</a>
+	<a href="/tags/">Tags</a>
+	<a href="#">Users</a>
+	<form th:action="@{/search}" method="get">
+		<div class="search-container">
+			<!--<input type="text" placeholder="Search...">
+        <button type="submit">Search</button>-->
+			
+				<input type="text" name="search" placeholder="Search...">
+				<button type="submit">Search</button>
+			
 		</div>
+		</form>
+	<!--<div class="search-container">
+		<input type="text" placeholder="Search...">
+		<button type="submit">Search</button>
+	</div>-->
+	<a href="/questions/ask" class="right">Ask Question</a>
+</div>
+<div class="question-container">
+	<div class="question">
+		<h1><span th:text="${questions.title}"></h1>
+		<span th:text="'Asked on '+${#temporals.format(questions.createdOn, 'dd/MMM/yyy HH:mm')} "></span>
+		&nbsp;&nbsp;<span th:text="'Viewed '+${questions.view}+' times'"></span>
+		&nbsp;&nbsp;
+			<span>Asked By: Harsh</span>
+		<hr>
+		<br>
+		<p th:text="${questions.content}"></p>
+		<div class="vote-container">
+			<button class="vote-button" id="upvote">
+				<h2><i class="bi bi-caret-up-fill"></i></h2>
+			</button>
+			<span class="vote-count" id="vote-count">0</span>
+			<button class="vote-button" id="downvote">
+				<h2><i class="bi bi-caret-down-fill"></i></h2>
+			</button>
+		</div>
+		<br>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<a href="#">add comments</a>
+	</div>
+	<br>
+	<br>
+	<h2 style="align-self:flex-start;margin-left: 375px;">Answers</h2>
+	<div class="answer" th:each="answer:${anslist}">
+		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
+		<p th:text="${answer.content}"></p>
+		<div class="vote-container">
+			<button class="vote-button" id="upvote">
+				<h2><i class="bi bi-caret-up-fill"></i></h2>
+			</button>
+			<span class="vote-count" id="vote-count">0</span>
+			<button class="vote-button" id="downvote">
+				<h2><i class="bi bi-caret-down-fill"></i></h2>
+			</button>&nbsp;&nbsp;
+			<form action="/deleteans" method="post">
+				<input type="hidden" name="id" th:value=${answer.id} />
+				<input type="hidden" name="qid" th:value=${questions.id} />
+
+				<input type="submit" value="Delete"/>
+			</form>
+			&nbsp;&nbsp;
+			<form action="/updateans" method="post">
+				<input type="hidden" name="id" th:value=${answer.id} />
+				<input type="hidden" name="qid" th:value=${questions.id} />
+
+				<input type="submit" value="update"/>
+			</form>
+		</div>
+		<br>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<hr id="lines">
+		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<a href="#">add comments</a>
+	</div>
+        <br>
 		<form th:action="@{/saveanswer}" method="post">
-			<textarea name="answer" id="answer" rows="6" placeholder="Write your answer here"></textarea>
-			<div th:each="question : ${questions}">
-				<input type="hidden" name="id" th:value=${question.id} />
+			<textarea name="answer" id="answer" rows="6" cols="109" placeholder="Write your answer here"></textarea>
+			<div>
+				<input type="hidden" name="id" th:value="${questions.id}" />
 			</div>
 			<button type="submit">Post Your Answer</button>
 		</form>
-	</div>
-	</div>
-</body>
+</div>
 
+</body>
 </html>

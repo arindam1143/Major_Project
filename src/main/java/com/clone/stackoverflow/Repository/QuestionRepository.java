@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.clone.stackoverflow.model.Question;
+
+import jakarta.transaction.Transactional;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long>{
 	@Query("SELECT q FROM Question q WHERE q.title LIKE CONCAT('%', :searchText, '%')")
@@ -17,6 +19,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long>{
 	public List<Question> searchByContent(@Param("searchText") String searchText);
 	
 	@Modifying
+	@Transactional
     @Query("UPDATE Question q SET q.view=(q.view+1) WHERE id=:questionId  ")
     void updateViewCount(Long questionId);
 	

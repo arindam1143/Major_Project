@@ -31,7 +31,7 @@ public class HomeController {
 	@Autowired
 	AnswerRepository answerRepository;
 	
-	@GetMapping("/demo")
+	@GetMapping("/")
 	public String open() {
 		return "Home";
 	}
@@ -45,6 +45,7 @@ public class HomeController {
 	}
 	@GetMapping("/question")
 	public String QuestionPage(@RequestParam("id") Long id,Model model) {
+		questionRepository.updateViewCount(id);
 		Question question=questionRepository.findById(id).get();
 		model.addAttribute("questions",question);
 		List<Answer> anslist=question.getAnswers();
