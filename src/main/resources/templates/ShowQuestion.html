@@ -157,7 +157,7 @@
 	<br>
 	<br>
 	<h2 style="align-self:flex-start;margin-left: 375px;">Answers</h2>
-	<div class="answer" th:each="anslist : ${anslist}>
+	<div class="answer" th:each="answer:${anslist}">
 		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
 		<p th:text="${anslist.content}"></p>
 		<div class="vote-container">
@@ -193,7 +193,7 @@
 		<form th:action="@{/saveanswer}" method="post">
 			<textarea name="answer" id="answer" rows="6" cols="109" placeholder="Write your answer here"></textarea>
 			<div>
-				<input type="hidden" name="id" th:value=${question.id} />
+				<input type="hidden" name="id" th:value="${questions.id}" />
 			</div>
 			<button type="submit">Post Your Answer</button>
 		</form>
