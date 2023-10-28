@@ -27,6 +27,7 @@ public class TagService {
 
     public Tag createTag(String tagName) {
         Tag tag = new Tag();
+        tag.setQuestionCount(1L);
         tag.setName(tagName);
         return tagRepository.save(tag);
     }
@@ -47,6 +48,9 @@ public class TagService {
             Tag tag = tagRepository.findByName(tagName);
             if (tag == null) {
                 tag = createTag(tagName);
+            }else {
+                tag.setQuestionCount(tag.getQuestionCount()+1);
+                tag = tagRepository.save(tag);
             }
             tags.add(tag);
         }
@@ -97,8 +101,8 @@ public class TagService {
                     pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("name")));
                     break;
                 case "popular":
-                    pageable = PageRequest.of(pageNo - 1, pageSize);
-                    return tagRepository.searchTagsByPopularity(query,pageable);
+                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("questionCount")));
+                    break;
                 default:
                     pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("publishedDate")));
                     break;

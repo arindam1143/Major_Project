@@ -5,11 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Tag {
@@ -17,7 +13,8 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
+	@Column(name = "question_count")
+	private Long questionCount=0L;
 	private LocalDate publishedDate = LocalDate.now();
 
 
@@ -40,6 +37,13 @@ public class Tag {
 		this.id = id;
 	}
 
+	public Long getQuestionCount() {
+		return questionCount;
+	}
+
+	public void setQuestionCount(Long questionCount) {
+		this.questionCount = questionCount;
+	}
 
 	public String getName() {
 		return name;
@@ -56,6 +60,5 @@ public class Tag {
 
 		this.questions = questions;
 	}
-
     
 }
