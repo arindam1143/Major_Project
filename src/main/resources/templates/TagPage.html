@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tag Page</title>
+    <title>Tags-Stack Overflow</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,16 +14,79 @@
             color: white;
             padding: 10px;
         }
+        .navbar-main {
+            background-color: #ebe7e7;
+            overflow: hidden;
+            border-top: 5px solid orange;
+        }
+
+        .navbar-main a {
+            float: left;
+            display: block;
+            color: #030303;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar-main a:hover {
+            background-color: #444;
+        }
+
+        .navbar-main a.logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-main a.right {
+            float: right;
+        }
+
+        .search-container {
+            float: left;
+        }
+        .search-container{
+            display: flex;
+            width: 50%;
+        }
+        .search-container input[type="text"] {
+            padding: 10px;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-left: 20px;
+            border: none;
+            width:100%;
+        }
+
+        .search-container button {
+            display: inline;
+            padding: 10px;
+            margin-top: 10px;
+            background: #0077cc;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+        }
         .navbar {
             background-color: white;
             overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .search-bar {
+            flex-grow: 1;
+        }
+        .search-bar input {
+            width: 20%;
+            padding: 10px;
         }
         .navbar button {
-            float: right;
             font-size: 16px;
             color: Orange;
             text-align: center;
-            padding: 14px 16px;
+            padding: 12px 14px;
             text-decoration: none;
             border: 1px orange solid;
         }
@@ -32,41 +95,141 @@
             color: #333;
         }
         .tag-container {
-            overflow-x: auto; /* Enable horizontal scrolling */
-            white-space: nowrap; /* Prevent wrapping to the next line */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .tag-card {
-            display: inline-block; /* Display tags in a line */
-            margin: 0 10px; /* Add margin between tags */
+            flex: 0 0 calc(25% - 20px);
+            margin: 10px;
             padding: 10px;
-            background-color: white;
+            background-color: #f5f5f5;
             border: 1px solid #ddd;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        a {
+        .tag-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: orange;
+        }
+
+
+        .questions-asked,
+        .created-at {
+            width: 20%;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .tag-card a {
             text-decoration: none;
             color: Orange;
             font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        a:hover {
-            color: Orange;
+        .tag-card a:hover {
+            color: #FFA500;
+        }
+        h2, p {
+            margin: 5px 0;
+
+        }
+        p {
+            margin: 10px 0;
+        }
+        .tag-date {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .total-rows {
+            font-size: 16px;
+        }
+
+        .page-numbers {
+            margin-top: 10px;
+        }
+
+        .page-link {
+            padding: 5px 10px;
+            margin: 0 5px;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #f3f3f3;
+            color: #333;
+        }
+
+        .page-link:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .current-page {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<h1>Stack Overflow Tags</h1>
+<div class="navbar-main">
+    <a href="#" class="logo">Stack Overflow</a>
+    <a href="#">Questions</a>
+    <a href="#">Tags</a>
+    <a href="#">Users</a>
+    <div class="search-container">
+        <input type="text" placeholder="Search...">
+        <button type="submit">Search</button>
+    </div>
+    <a href="#" class="right">Ask Question</a>
+</div>
 <div class="navbar">
+    <div class="search-bar">
+        <form th:action="@{/}" method="get">
+            <input type="text" name="query" placeholder="Search tags..." />
+            <button type="submit">Search</button>
+        </form>
+    </div>
     <form th:action="'/?start='+${pageNo}" method="get">
-        <button type="submit" name="sort" value="publishedAsc">New</button>
+        <input type="hidden" name="query" th:value="${query}" />
+        <button type="submit" name="sort" value="publishedDesc">New</button>
         <button type="submit" name="sort" value="titleAsc">Name</button>
+        <button type="submit" name="sort" value="popular">Popular</button>
     </form>
+    <a href="/"><button type="submit" >All Tags</button></a>
 </div>
 <div class="tag-container">
     <div th:each="tag : ${allTags}" class="tag-card">
-        <a th:href="@{'/tags/' + ${tag.id}}"><span th:text="${tag.name}"></span></a>
+        <a th:href="@{'/tags/' + ${tag.name}}">
+            <h2 th:text="${tag.name}"></h2>
+        </a>
+            <div class="tag-details">
+                <div class="questions-asked">
+                    <span>Questions Asked:</span>
+                    <p th:text="${tag.questions.size()}"> </p>
+                </div>
+                <div class="created-at">
+                    <span>Created At:</span>
+                    <p th:text="${tag.publishedDate}"></p>
+                </div>
+            </div>
+
     </div>
 </div>
+
 <div th:if="${totalPages > 1}" class="pagination-container">
     <div class="page-numbers">
         <span th:each="i : ${#numbers.sequence(1, totalPages)}">

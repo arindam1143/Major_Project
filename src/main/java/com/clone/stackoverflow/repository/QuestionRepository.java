@@ -21,4 +21,6 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
     public List<Question> searchByTitle(@Param("searchText") String searchText);
     @Query("SELECT q FROM Question q WHERE q.content LIKE CONCAT('%', :searchText, '%')")
     public List<Question> searchByContent(@Param("searchText") String searchText);
+
+    List<Question> findByTagsName(String tagName);
 }

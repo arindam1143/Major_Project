@@ -51,6 +51,7 @@
            margin-right: 10px;
            margin-left: 20px;
            border: none;
+           width:100%;
        }
 
        .search-container button {
@@ -151,19 +152,14 @@
 		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
 		<hr id="lines">
 		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<a href="#">add comments</a>
 	</div>
 	<br>
 	<br>
 	<h2 style="align-self:flex-start;margin-left: 375px;">Answers</h2>
-	<div class="answer">
+	<div class="answer" th:each="anslist : ${anslist}>
 		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
-		<p>Creating a simple HTML page is easy. Just follow these steps:</p>
-		<ol>
-			<li>Open a text editor like Notepad.</li>
-			<li>Write your HTML code, e.g., &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;My First Page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</li>
-			<li>Save the file with a .html extension.</li>
-			<li>Open the saved file in a web browser.</li>
-		</ol>
+		<p th:text="${anslist.content}"></p>
 		<div class="vote-container">
 			<button class="vote-button" id="upvote">
 				<h2><i class="bi bi-caret-up-fill"></i></h2>
@@ -171,64 +167,36 @@
 			<span class="vote-count" id="vote-count">0</span>
 			<button class="vote-button" id="downvote">
 				<h2><i class="bi bi-caret-down-fill"></i></h2>
-			</button>
+			</button>&nbsp;&nbsp;
+			<form action="/deleteans" method="post">
+				<input type="hidden" name="id" th:value=${anslist.id} />
+				<input type="hidden" name="qid" th:value=${question.id} />
+
+				<input type="submit" value="Delete"/>
+			</form>
+			&nbsp;&nbsp;
+			<form action="/updateans" method="post">
+				<input type="hidden" name="id" th:value=${anslist.id} />
+				<input type="hidden" name="qid" th:value=${question.id} />
+
+				<input type="submit" value="update"/>
+			</form>
 		</div>
 		<br>
 		<hr id="lines">
 		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
 		<hr id="lines">
 		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
+		<a href="#">add comments</a>
 	</div>
-	<div class="answer">
-		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
-		<p>Creating a simple HTML page is easy. Just follow these steps:</p>
-		<ol>
-			<li>Open a text editor like Notepad.</li>
-			<li>Write your HTML code, e.g., &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;My First Page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</li>
-			<li>Save the file with a .html extension.</li>
-			<li>Open the saved file in a web browser.</li>
-		</ol>
-		<div class="vote-container">
-			<button class="vote-button" id="upvote">
-				<h2><i class="bi bi-caret-up-fill"></i></h2>
-			</button>
-			<span class="vote-count" id="vote-count">0</span>
-			<button class="vote-button" id="downvote">
-				<h2><i class="bi bi-caret-down-fill"></i></h2>
-			</button>
-		</div>
-		<br>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-	</div>
-	<div class="answer">
-		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
-		<p>Creating a simple HTML page is easy. Just follow these steps:</p>
-		<ol>
-			<li>Open a text editor like Notepad.</li>
-			<li>Write your HTML code, e.g., &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;My First Page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</li>
-			<li>Save the file with a .html extension.</li>
-			<li>Open the saved file in a web browser.</li>
-		</ol>
-		<div class="vote-container">
-			<button class="vote-button" id="upvote">
-				<h2><i class="bi bi-caret-up-fill"></i></h2>
-			</button>
-			<span class="vote-count" id="vote-count">0</span>
-			<button class="vote-button" id="downvote">
-				<h2><i class="bi bi-caret-down-fill"></i></h2>
-			</button>
-		</div>
-		<br>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-	</div>
+        <br>
+		<form th:action="@{/saveanswer}" method="post">
+			<textarea name="answer" id="answer" rows="6" cols="109" placeholder="Write your answer here"></textarea>
+			<div>
+				<input type="hidden" name="id" th:value=${question.id} />
+			</div>
+			<button type="submit">Post Your Answer</button>
+		</form>
 </div>
 
 </body>

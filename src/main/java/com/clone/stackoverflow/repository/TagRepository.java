@@ -2,6 +2,8 @@ package com.clone.stackoverflow.repository;
 
 import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,15 @@ public interface TagRepository extends JpaRepository<Tag,Long> {
 
     @Query("SELECT T.questions FROM Tag T WHERE LOWER(T.name) LIKE CONCAT('%', LOWER(:searchText), '%')")
     public List<Question> searchByTag(@Param("searchText") String searchText);
+
+    @Query("SELECT t FROM Tag t WHERE (:query IS NULL OR lower( t.name) LIKE %:query%)")
+    Page<Tag> searchTags(@Param("query") String searchQuery, Pageable page);
+
+    @Query("SELECT t FROM Tag t " +
+            "LEFT JOIN t.questions q "+
+            "WHERE (:query IS NULL OR lower( t.name) LIKE %:query%) "+
+            "GROUP BY t.id "+
+            "ORDER BY COUNT(t) DESC"
+    )
+    Page<Tag> searchTagsByPopularity(@Param("query") String searchQuery, Pageable page);
 }

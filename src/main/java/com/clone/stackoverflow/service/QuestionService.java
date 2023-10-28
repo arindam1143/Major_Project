@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,4 +33,13 @@ public class QuestionService {
             return questionRepository.save(updateQuestion);
         }
     }
+
+	public Question addTag(Question question)
+    {
+        return questionRepository.save(question);
+    }
+    public List<Question> getQuestionsByTagName(String tagName) {
+        return questionRepository.findByTagsName(tagName);
+    }
+
 }

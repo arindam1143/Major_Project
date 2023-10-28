@@ -68,7 +68,7 @@ public class Answer {
 		this.user = user;
 	}
 
-	public Question getQuestion() {
+	public Question getQuestion() { 
 		return question;
 	}
 

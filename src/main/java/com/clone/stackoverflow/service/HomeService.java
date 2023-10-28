@@ -8,10 +8,11 @@ import com.clone.stackoverflow.repository.QuestionRepository;
 import com.clone.stackoverflow.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.clone.stackoverflow.repository.UserRepository;
 import com.clone.stackoverflow.model.Question;
-@Component
+@Service
 public class HomeService {
 	@Autowired
 	QuestionRepository questionRepository;
