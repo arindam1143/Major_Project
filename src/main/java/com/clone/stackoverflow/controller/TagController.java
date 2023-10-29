@@ -28,32 +28,32 @@ private TagService tagService;
 private QuestionService questionService;
 
 
-    @GetMapping("/tags")
-    public String postTags(Model model) {
-        Tag tag = new Tag();
-        Question question = new Question();
-        model.addAttribute("enterTags", tag);
-        model.addAttribute("questionTags" , question);
-        return "EnterTags";
-    }
+//    @GetMapping("/tags")
+//    public String postTags(Model model) {
+//        Tag tag = new Tag();
+//        Question question = new Question();
+//        model.addAttribute("enterTags", tag);
+//        model.addAttribute("questionTags" , question);
+//        return "EnterTags";
+//    }
 
-    @PostMapping("/submit-tags")
-    public String saveTags(@RequestParam("name") String tagsName, Question question){
-        Set<Tag> tagsValue = Arrays.stream(tagsName.split(",")).map(tagName -> tagService.saveTag(tagName.trim()))
-                .collect(Collectors.toSet());
-        question.setTags(tagsValue);
-        questionService.addTag(question);
-        return "redirect:/";
-    }
+//    @PostMapping("/submit-tags")
+//    public String saveTags(@RequestParam("name") String tagsName, Question question){
+//        Set<Tag> tagsValue = Arrays.stream(tagsName.split(",")).map(tagName -> tagService.saveTag(tagName.trim()))
+//                .collect(Collectors.toSet());
+//        question.setTags(tagsValue);
+//        questionService.addTag(question);
+//        return "redirect:/";
+//    }
 
     @GetMapping("tags/{name}")
     public String getQuestions(@PathVariable String name,Model model){
 
         List<Question> questions = questionService.getQuestionsByTagName(name);
         model.addAttribute("questions" , questions);
-        return "Questions";
+        return "HomePage";
     }
-    @GetMapping
+    @GetMapping("/tags/")
     public String getTags(
             @RequestParam(value = "start", required = false) Integer pageNo,
             @RequestParam(required = false, value = "sort") String order,

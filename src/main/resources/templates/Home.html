@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Tour Tabbing</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link
+		th:href="@{https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Serif:wght@300;400&display=swap}"
+		rel="stylesheet">
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+			color: #242729;
+			font-family: 'IBM Plex Sans', serif;
+		}
+
+		.container {
+			width: 95%;
+			max-width: 1060px;
+			margin: auto;
+		}
+
+		header {
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		header>img {
+			max-width: 700px;
+			margin: auto;
+		}
+
+		.tour-tabbing-outer {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			background: #f1f2f3;
+		}
+
+		.grid-col-3-6-3 {
+			display: grid;
+			grid-template-columns: 25% 50% 25%;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.flex-listing {
+			list-style: none;
+		}
+
+		.flex-listing>li {
+			margin: 20px 0;
+			padding: 10px;
+			border-radius: 5px;
+			position: relative;
+		}
+
+		.flex-listing>li:hover,
+		.flex-listing>li.active {
+			background: #fff;
+			box-shadow: 0 1px 4px rgba(0, 0, 0, .09),
+				0 3px 8px rgba(0, 0, 0, .09),
+				0 4px 13px rgba(0, 0, 0, .13);
+		}
+
+		.flex-listing>li>a {
+			display: flex;
+			align-items: center;
+			text-decoration: unset;
+		}
+
+		.flex-listing>li>a>img {
+			max-width: 50px;
+			margin-right: 10px;
+		}
+
+		.col-left .flex-listing>li.active:after,
+		.col-right .flex-listing>li.active:after {
+			content: '';
+			position: absolute;
+			top: 50%;
+			right: -18px;
+			width: 16px;
+			height: 16px;
+			background-color: #fff;
+			border: 1px solid #d6d9dc;
+			border-left: transparent;
+			border-bottom: transparent;
+			box-shadow: 2px -2px 8px rgba(59, 64, 69, .1);
+			transform: translateY(-50%) translateX(-50%) rotate(45deg);
+			transition: all 0.2s;
+		}
+
+		.col-right .flex-listing>li.active:after {
+			right: unset;
+			left: 0;
+			border-left: 1px solid #d6d9dc;
+			border-bottom: 1px solid #d6d9dc;
+			border-right: transparent;
+			border-top: transparent;
+			box-shadow: -2px 2px 8px rgba(59, 64, 69, .1);
+		}
+
+		.tab-content h4 {
+			font-weight: 500;
+			font-size: 20px;
+			text-align: center;
+		}
+
+		.tab-content {
+			display: none;
+		}
+
+		.tab-content.current {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="tour-tabbing-outer">
+		<div class="container">
+			<header><img th:src="@{/picture/logo.png}" /></header>
+			<div class="tour-tabbing">
+				<div class="grid-col-3-6-3">
+					<div class="col col-left">
+						<ul class="flex-listing">
+							<li data-tab="tab1" class="active">
+								<a href="/questions/ask">
+									<img th:src="@{/picture/ask-a-question.svg}" /> Ask a question
+								</a>
+							</li>
+							<li data-tab="tab2">
+								<a href="#">
+									<img th:src="@{/picture/votes.svg}" /> Vote on everything
+								</a>
+							</li>
+							<li data-tab="tab3">
+								<a href="/home">
+									
+									<img th:src="@{/picture/answer.svg}" /> Answer questions
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col col-center">
+						<div id="tab1" class="tab-content current">
+							<img th:src="@{/picture/illo-feats-ask.svg}" />
+							<h4>Ask a question publicly on 170+ Stack Exchange sites or privately using Stack Overflow
+								for Teams.</h4>
+						</div>
+
+						<!-- Repeat the similar structure for other tab content -->
+
+					</div>
+					<div class="col col-right">
+						<ul class="flex-listing">
+							<li data-tab="tab4">
+								<a href="#">
+									<img th:src="@{/picture/tags.svg}" /> Tag your question
+								</a>
+							</li>
+							<li data-tab="tab5">
+								<a href="#">
+									<img th:src="@{/picture/accept.svg}" /> Accept an answer
+								</a>
+							</li>
+							<li data-tab="tab6">
+								<a href="#">
+									<img th:src="@{/picture/get-recognized.svg}" /> Get recognized
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$('.flex-listing > li').click(function () {
+			var tab_id = $(this).attr('data-tab');
+
+			$('.flex-listing > li').removeClass('active');
+			$('.tab-content').removeClass('current');
+
+			$(this).addClass('active');
+			$("#" + tab_id).addClass('current');
+		});
+	</script>
+</body>
+
+</html>

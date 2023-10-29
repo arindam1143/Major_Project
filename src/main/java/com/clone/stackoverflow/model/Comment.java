@@ -1,10 +1,15 @@
 package com.clone.stackoverflow.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class Comment {
@@ -14,13 +19,15 @@ public class Comment {
     private String content;
 
     @ManyToOne
+	@JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    private Question question;
-
-    @ManyToOne
+	@JoinColumn(name = "answer_id")
     private Answer answer;
+
+	@Column(name = "created_on")
+	private LocalDateTime createdOn;
 
 	public Long getId() {
 		return id;
@@ -45,15 +52,7 @@ public class Comment {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public Question getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
-
+ 
 	public Answer getAnswer() {
 		return answer;
 	}
@@ -61,7 +60,10 @@ public class Comment {
 	public void setAnswer(Answer answer) {
 		this.answer = answer;
 	}
-    
-    
+
+	@PrePersist
+	public void prePersist() {
+		createdOn = LocalDateTime.now();
+	}
 
 }

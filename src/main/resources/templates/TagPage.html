@@ -129,42 +129,113 @@
         .current-page {
             font-weight: bold;
         }
+        .navbar-main {
+            background-color: #ebe7e7;
+            overflow: hidden;
+            border-top: 5px solid orange;
+        }
+
+        .navbar-main a {
+            float: left;
+            display: block;
+            color: #030303;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar-main a:hover {
+            background-color: #444;
+        }
+
+        .navbar-main a.logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-main a.right {
+            float: right;
+        }
+
+        .search-container {
+            float: left;
+        }
+
+        .search-container {
+            display: flex;
+            width: 50%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-left: 20px;
+            border: none;
+            width: 100%;
+        }
+
+        .search-container button {
+            display: inline;
+            padding: 10px;
+            margin-top: 10px;
+            background: #0077cc;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
-<h1>Stack Overflow Tags</h1>
+<div class="navbar-main">
+    <a href="/" class="logo">Stack Overflow</a>
+    <a href="/home">Questions</a>
+    <a href="/tags/">Tags</a>
+    <a href="#">Users</a>
+    <form th:action="@{/search}" method="get">
+        <div class="search-container">
+            <!--<input type="text" placeholder="Search...">
+        <button type="submit">Search</button>-->
+
+            <input type="text" name="search" placeholder="Search...">
+            <button type="submit">Search</button>
+
+        </div>
+    </form>
+    <a href="/questions/ask" class="right">Ask Question</a>
+</div>
 <h2>Tags</h2>
 <h3>A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question</h3>
 <div class="navbar">
     <div class="search-bar">
-        <form th:action="@{/}" method="get">
+        <form th:action="@{/tags/}" method="get">
             <input type="text" name="query" placeholder="Search tags..." />
             <button type="submit">Search</button>
         </form>
     </div>
-    <form th:action="'/?start='+${pageNo}" method="get">
+    <form th:action="'/tags/?start='+${pageNo}" method="get">
         <input type="hidden" name="query" th:value="${query}" />
         <button type="submit" name="sort" value="publishedDesc">New</button>
         <button type="submit" name="sort" value="titleAsc">Name</button>
         <button type="submit" name="sort" value="popular">Popular</button>
     </form>
-    <a href="/"><button type="submit" >All Tags</button></a>
+    <a href="/tags/"><button type="submit" >All Tags</button></a>
 </div>
 <div class="tag-container">
     <div th:each="tag : ${allTags}" class="tag-card">
         <a th:href="@{'/tags/' + ${tag.name}}">
             <h2 th:text="${tag.name}"></h2>
         </a>
-            <div class="tag-details">
-                <div class="questions-asked">
-                    <span>Questions Asked:</span>
-                    <p th:text="${tag.questions.size()}"> </p>
-                </div>
-                <div class="created-at">
-                    <span>Created At:</span>
-                    <p th:text="${tag.publishedDate}"></p>
-                </div>
+        <div class="tag-details">
+            <div class="questions-asked">
+                <span>Questions Asked:</span>
+                <p th:text="${tag.questions.size()}"> </p>
             </div>
+            <div class="created-at">
+                <span>Created At:</span>
+                <p th:text="${tag.publishedDate}"></p>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -172,7 +243,7 @@
 <div th:if="${totalPages > 1}" class="pagination-container">
     <div class="page-numbers">
         <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-            <a th:if="${pageNo != i}" th:href="@{'/?start=' + ${i} +  '&sort=' + ${sortDir} }" class="page-link">[[${i}]]</a>
+            <a th:if="${pageNo != i}" th:href="@{'/tags/?start=' + ${i} +  '&sort=' + ${sortDir} }" class="page-link">[[${i}]]</a>
             <span th:unless="${pageNo != i}" class="current-page">[[${i}]]</span>
         </span>
     </div>

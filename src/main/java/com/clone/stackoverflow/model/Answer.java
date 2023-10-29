@@ -1,12 +1,9 @@
 package com.clone.stackoverflow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Answer {
@@ -17,13 +14,26 @@ public class Answer {
 	private Long view;
 
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@ManyToOne
+	@JoinColumn(name = "question_id")
 	private Question question;
 
-	@ManyToOne
-	private Comment comment;
+	@OneToMany(mappedBy = "answer")
+	private List<Comment> comments;
+
+	@Column(name = "created_on")
+	private LocalDateTime createdOn;
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public Long getId() {
 		return id;
@@ -49,20 +59,12 @@ public class Answer {
 		this.user = user;
 	}
 
-	public Question getQuestion() {
+	public Question getQuestion() { 
 		return question;
 	}
 
 	public void setQuestion(Question question) {
 		this.question = question;
-	}
-
-	public Comment getComment() {
-		return comment;
-	}
-
-	public void setComment(Comment comment) {
-		this.comment = comment;
 	}
 
 	public Long getView() {
@@ -72,6 +74,10 @@ public class Answer {
 	public void setView(Long view) {
 		this.view = view;
 	}
-	
+
+	@PrePersist
+	public void prePersist() {
+		createdOn = LocalDateTime.now();
+	}
 
 }

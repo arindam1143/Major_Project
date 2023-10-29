@@ -4,37 +4,47 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.JoinColumn;
 
 
 @Entity
 public class Question {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String title;
-	private String content;
-	private Long view;
-	private Long upVote;
-	private Long downVote;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    @Column(length = 5000)
+    private String content;
+    private Long view=0l;
+    private Long upVote=0l;
+    private Long downVote=0l;
 	@Column(name = "created_on")
-	private LocalDateTime createdOn;
+	private LocalDateTime createdOn=LocalDateTime.now();
 
-	@ManyToOne
+    @ManyToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+    private User user;
 
-	@ManyToMany
-	@JoinTable(
-			name = "question_tag",
-			joinColumns = @JoinColumn(name = "question_id"),
-			inverseJoinColumns = @JoinColumn(name = "tag_id")
-	)
-	private Set<Tag> tags;
+    @ManyToMany
+    @JoinTable(
+        name = "question_tag",
+        joinColumns = @JoinColumn(name = "question_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags;
 
-	@OneToMany(mappedBy = "question")
-	private List<Answer> answers;
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
 
 	public Long getUpVote() {
 		return upVote;
@@ -123,5 +133,5 @@ public class Question {
 		upVote=0L;
 		downVote=0L;
 	}
-
+   
 }
