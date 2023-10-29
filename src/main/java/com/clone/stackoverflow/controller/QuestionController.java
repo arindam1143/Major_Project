@@ -2,6 +2,7 @@ package com.clone.stackoverflow.controller;
 
 import com.clone.stackoverflow.repository.QuestionRepository;
 import com.clone.stackoverflow.repository.TagRepository;
+import jakarta.websocket.server.PathParam;
 import org.springframework.stereotype.Controller;
 
 import com.clone.stackoverflow.model.Question;
@@ -45,7 +46,7 @@ public class QuestionController {
 //	        question.setTags(tagsValue);
 	    	Question savedQuestion =questionService.createQuestion(question, tagString);
 	        model.addAttribute("questions", savedQuestion);
-	         
+
 	        return "redirect:/question?id="+savedQuestion.getId();
 	    }
 
@@ -57,9 +58,20 @@ public class QuestionController {
 	        return "Question";
 	    }
 
-	    @GetMapping("/delete")
-	    public String deleteQuestion(@RequestParam("id") Long id){
-	        questionRepository.deleteById(id);
-	        return "redirect:/question?id="+id;
+		@PostMapping("/update")
+		public String updateQuestionForm(@RequestParam Long questionId,Model model){
+			Question question = questionRepository.findById(questionId).get();
+			StringBuilder tagString=new StringBuilder("");
+			question.getTags().forEach(tag->{tagString.append(tag.getName()+",");});
+			model.addAttribute("updateQuestion", question);
+			model.addAttribute("tagString", tagString);
+	        model.addAttribute("tagList",tagRepository.findAllTagNames());
+			return "UpdateQuestion";
+		}
+
+	    @PostMapping("/delete")
+	    public String deleteQuestion(@RequestParam Long questionId){
+	        questionRepository.deleteById(questionId);
+	        return "redirect:/home";
 	    }
 }

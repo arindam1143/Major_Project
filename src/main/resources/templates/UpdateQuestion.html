@@ -107,25 +107,27 @@
         </div>
         <a href="#" class="right">Ask Question</a>
     </div>
-    <div class="container">
+
+    <div class="container" th:if="${updateQuestion}">
         <h1>Ask a Question</h1>
         <form action="/questions/create" method="post" autocomplete="off">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" placeholder="Enter your question title" required>
-
+            <input type="hidden" name="id" th:value="${updateQuestion.id}">
+            <label>Title:</label>
+            <input type="text"  name="title" th:value="${updateQuestion.title}">
             <label for="question">Question:</label>
-            <textarea id="question" name="content" rows="8" placeholder="Enter your question details" required></textarea>
+            <textarea id="question" name="content" rows="8" th:text="${updateQuestion.content}" ></textarea>
 
             <label for="autocomplete">Tags:</label>
-            <input type="text" id="autocomplete" name="tagString" placeholder="Add tags that describe your question">
+            <input type="text" id="autocomplete" name="tagString" th:value="${tagString}">
             <div id="results"></div>
-<!--            <label for="tags">Suggested Questions:</label>-->
-<!--            <input type="text" id="tags" name="......." placeholder="Add tags that describe your question">-->
+    <!--            <label for="tags">Suggested Questions:</label>-->
+    <!--            <input type="text" id="tags" name="......." placeholder="Add tags that describe your question">-->
             <br>
             <br>
-            <button type="submit">Post Your Question</button>
-        </form>
+            <button type="submit">Save Changes</button>
+    </form>
     </div>
+
 
     <script th:inline="javascript">
         var results = /*[[${tagList}]]*/ [];

@@ -7,6 +7,7 @@
 	<style>
 		body {
            margin: 0;
+           padding-bottom: 100px;
            font-family: Arial, sans-serif;
        }
 
@@ -15,7 +16,14 @@
            overflow: hidden;
            border-top: 5px solid orange;
        }
-
+	   .answer-button{
+	   	   background-color:#2d80a6;
+	   	   color:white;
+	   	   padding:7px;
+	   	   border-radius: 5px;
+	   	   font-size:medium;
+			margin:10px 0px;
+	   }
        .navbar a {
            float: left;
            display: block;
@@ -114,6 +122,18 @@
            font-size: 24px;
            margin: 0 10px;
        }
+		.link{
+            text-decoration: none;
+            font-size: medium;
+            border: 1px solid rgb(179, 221, 243);
+            color:gray;
+        }
+        textarea{
+        	resize:vertical;
+        }
+		.hidden-form {
+            display: none; /* Initially hide the form */
+        }
 	</style>
 </head>
 <body>
@@ -155,14 +175,33 @@
 			<span class="vote-count" id="vote-count">0</span>
 			<button class="vote-button" id="downvote">
 				<h2><i class="bi bi-caret-down-fill"></i></h2>
-			</button>
+			</button>&nbsp;&nbsp;
+			<form action="questions/delete" method="post">
+				<input type="hidden" name="questionId" th:value=${questions.id} />
+				<input type="submit" value="Delete"/>
+			</form>
+			&nbsp;&nbsp;
+			<form action="/questions/update" method="post">
+				<input type="hidden" name="questionId" th:value=${questions.id} />
+				<input type="submit" value="update"/>
+			</form>
 		</div>
 		<br>
+		<div th:each="comment:${questions.comments}">
+			<hr id="lines">
+			<p style="font-size: smaller;margin-bottom:0px;" th:text="${comment.content}"></p>
+			<a th:href="'/comment/update/'+${comment.id}" style="font-size:smaller;color:#2d80a6;">Edit</a>&nbsp;&nbsp;
+			<a th:href="'/comment/delete/'+${comment.id}+'/'+${questions.id}" style="font-size:smaller;color:#2d80a6;">Delete</a>
+		</div>
 		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<a href="#">add comments</a>
+		<div class="hidden-form" id="form1">
+				<form method="post" action="/comment/question">
+					<input type="hidden" name="questionId" th:value=${questions.id} />
+					<textarea name="commentContent" rows="2" cols="90" placeholder="Write your comment here"></textarea>&nbsp;
+					<input type="submit" value="Add Comment">
+				</form>
+		</div>
+		<a href="#" class="link" data-target="form1">add comments</a>
 	</div>
 	<br>
 	<br>
@@ -193,21 +232,52 @@
 			</form>
 		</div>
 		<br>
+		<div th:each="comment:${answer.comments}">
+			<hr id="lines">
+			<p style="font-size: smaller;margin-bottom:0px" th:text="${comment.content}"></p>
+			<a th:href="'/comment/update/'+${comment.id}" style="font-size:smaller;color:#2d80a6;">Edit</a>&nbsp;&nbsp;
+			<a th:href="'/comment/delete/'+${comment.id}+'/'+${questions.id}" style="font-size:smaller;color:#2d80a6;">Delete</a>
+		</div>
 		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<hr id="lines">
-		<p style="font-size: smaller;">Thanks, It's more about extracting correctly the groups, not formatting in separate lines. Can you help me with that? </p>
-		<a href="#">add comments</a>
+		<div class="hidden-form" th:id="'form'+${answer.id}">
+			<form method="post" action="/comment/answer">
+				<input type="hidden" name="questionId" th:value=${questions.id} />
+				<input type="hidden" name="answerId" th:value=${answer.id} />
+				<textarea name="commentContent" rows="2" cols="90" placeholder="Write your comment here"></textarea>&nbsp;
+				<input type="submit" value="Add Comment">
+			</form>
+		</div>
+		<a href="#" class="link" th:attr="data-target='form'+${answer.id}" >add comments</a>
+
 	</div>
         <br>
+	<h2>Post Your Answer</h2>
 		<form th:action="@{/saveanswer}" method="post">
-			<textarea name="answer" id="answer" rows="6" cols="109" placeholder="Write your answer here"></textarea>
+			<textarea name="answer" id="answer" rows="6" cols="107" placeholder="Write your answer here"></textarea>
 			<div>
 				<input type="hidden" name="id" th:value="${questions.id}" />
 			</div>
-			<button type="submit">Post Your Answer</button>
+			<button type="submit" class="answer-button">Post Your Answer</button>
 		</form>
 </div>
+<script>
+	const showFormLinks = document.querySelectorAll(".link");
 
+        showFormLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                const targetFormId = this.getAttribute("data-target");
+                const targetForm = document.getElementById(targetFormId);
+
+                if (targetForm.style.display === "none" || targetForm.style.display === "") {
+                    targetForm.style.display = "block";
+                    link.style.display="none";
+                } else {
+                    targetForm.style.display = "none";
+                }
+            });
+        });
+</script>
 </body>
 </html>
