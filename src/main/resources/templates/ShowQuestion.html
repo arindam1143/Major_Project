@@ -126,10 +126,10 @@
 		<div class="search-container">
 			<!--<input type="text" placeholder="Search...">
         <button type="submit">Search</button>-->
-			
+
 				<input type="text" name="search" placeholder="Search...">
 				<button type="submit">Search</button>
-			
+
 		</div>
 		</form>
 	<!--<div class="search-container">
@@ -140,7 +140,7 @@
 </div>
 <div class="question-container">
 	<div class="question">
-		<h1><span th:text="${questions.title}"></h1>
+		<h1><span th:text="${questions.title}"></span></h1>
 		<span th:text="'Asked on '+${#temporals.format(questions.createdOn, 'dd/MMM/yyy HH:mm')} "></span>
 		&nbsp;&nbsp;<span th:text="'Viewed '+${questions.view}+' times'"></span>
 		&nbsp;&nbsp;
@@ -149,13 +149,19 @@
 		<br>
 		<p th:text="${questions.content}"></p>
 		<div class="vote-container">
-			<button class="vote-button" id="upvote">
-				<h2><i class="bi bi-caret-up-fill"></i></h2>
-			</button>
-			<span class="vote-count" id="vote-count">0</span>
+			<form th:action="@{'/questions/upvote/' + ${questions.id}}" method="post">
+				<button class="vote-button" id="upvote">
+					<h2><i class="bi bi-caret-up-fill"></i></h2>
+				</button>
+			</form>
+			<p style="font-size: 25px">
+			<span   th:text="${questions.upVote - questions.downVote >= 0} ? ${questions.upVote - questions.downVote} : '0'"></span>
+			</p>
+			<form th:action="@{'/questions/downvote/' + ${questions.id}}" method="post">
 			<button class="vote-button" id="downvote">
 				<h2><i class="bi bi-caret-down-fill"></i></h2>
 			</button>
+			</form>
 		</div>
 		<br>
 		<hr class="lines">
@@ -181,7 +187,6 @@
 			<form action="/deleteans" method="post">
 				<input type="hidden" name="id" th:value="${answer.id}" />
 				<input type="hidden" name="qid" th:value="${questions.id}" />
-
 				<input type="submit" value="Delete"/>
 			</form>
 			&nbsp;&nbsp;

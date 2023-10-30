@@ -1,5 +1,6 @@
 package com.clone.stackoverflow.model;
 
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	@Column(name = "content",columnDefinition = "text")
     private String content;
 
     @ManyToOne
@@ -26,8 +28,28 @@ public class Comment {
 	@JoinColumn(name = "answer_id")
     private Answer answer;
 
+	@ManyToOne
+	@JoinColumn(name = "question_id")
+    private Question question;
+
 	@Column(name = "created_on")
 	private LocalDateTime createdOn;
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
 
 	public Long getId() {
 		return id;
@@ -52,7 +74,7 @@ public class Comment {
 	public void setUser(User user) {
 		this.user = user;
 	}
- 
+
 	public Answer getAnswer() {
 		return answer;
 	}

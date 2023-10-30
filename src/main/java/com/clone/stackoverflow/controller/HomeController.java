@@ -1,23 +1,25 @@
 package com.clone.stackoverflow.controller;
 
-import java.util.List;
-import java.util.Set;
 
+import com.clone.stackoverflow.repository.AnswerRepository;
+import com.clone.stackoverflow.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.clone.stackoverflow.Repository.AnswerRepository;
-import com.clone.stackoverflow.Repository.QuestionRepository;
-import com.clone.stackoverflow.Repository.UserRepository;
+import com.clone.stackoverflow.repository.UserRepository;
+
 import com.clone.stackoverflow.model.Answer;
 import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.User;
 import com.clone.stackoverflow.service.HomeService;
 
 import org.springframework.ui.Model;
+
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -50,7 +52,6 @@ public class HomeController {
 		model.addAttribute("questions",question);
 		List<Answer> anslist=question.getAnswers();
 		model.addAttribute("anslist",anslist);
-		
 		return "ShowQuestion";
 	}
 	@GetMapping("/signup")
@@ -98,10 +99,9 @@ public class HomeController {
 		ansobj.setQuestion(question);
 		answerRepository.save(ansobj);
 		model.addAttribute("answer",ansobj);
-		
+
 		return "redirect:/question?id="+id;
 	}
-	
 	
 
 }

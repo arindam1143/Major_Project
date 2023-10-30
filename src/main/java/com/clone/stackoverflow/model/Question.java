@@ -23,13 +23,13 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @Column(length = 5000)
+	@Column(name = "content",columnDefinition = "text")
     private String content;
-    private Long view=0l;
-    private Long upVote=0l;
-    private Long downVote=0l;
+    private Long view;
+    private Long upVote;
+    private Long downVote;
 	@Column(name = "created_on")
-	private LocalDateTime createdOn=LocalDateTime.now();
+	private LocalDateTime createdOn;
 
     @ManyToOne
 	@JoinColumn(name = "user_id")
@@ -43,8 +43,19 @@ public class Question {
     )
     private Set<Tag> tags;
 
+	@OneToMany(mappedBy = "question")
+	private List<Comment> comments;
+
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public Long getUpVote() {
 		return upVote;

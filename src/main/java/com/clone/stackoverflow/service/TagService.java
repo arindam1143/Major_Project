@@ -3,9 +3,9 @@ package com.clone.stackoverflow.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.clone.stackoverflow.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import com.clone.stackoverflow.Repository.TagRepository;
 import com.clone.stackoverflow.model.Tag;
 
 @Service
@@ -77,7 +76,7 @@ public class TagService {
 	                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.asc("name")));
 	                    break;
 	                case "popular" :
-						pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("questionCount")));
+	                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("questions.size")));
 	                    break;
 	                default:
 	                    pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Order.desc("publishedDate")));

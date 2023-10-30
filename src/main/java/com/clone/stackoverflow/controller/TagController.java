@@ -51,7 +51,8 @@ private QuestionService questionService;
 
         List<Question> questions = questionService.getQuestionsByTagName(name);
         model.addAttribute("questions" , questions);
-        return "HomePage";
+        model.addAttribute("name", name);
+        return "ShowTag";
     }
     @GetMapping("/tags/")
     public String getTags(

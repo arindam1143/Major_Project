@@ -1,4 +1,4 @@
-package com.clone.stackoverflow.Repository;
+package com.clone.stackoverflow.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
