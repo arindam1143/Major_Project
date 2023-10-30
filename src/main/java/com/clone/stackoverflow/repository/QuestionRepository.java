@@ -2,6 +2,9 @@ package com.clone.stackoverflow.repository;
 
 import java.util.List;
 
+import com.clone.stackoverflow.model.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,7 +25,17 @@ public interface QuestionRepository extends JpaRepository<Question, Long>{
 	@Transactional
     @Query("UPDATE Question q SET q.view=(q.view+1) WHERE id=:questionId  ")
     void updateViewCount(Long questionId);
+
+	@Modifying
+	@Transactional
+    @Query("UPDATE Question q SET q.acceptedAnswerId=:answerId WHERE id=:questionId  ")
+    void setAcceptedAnswer(Long answerId,Long questionId);
+
+	@Modifying
+	@Transactional
+    @Query("UPDATE Question q SET q.acceptedAnswerId=-1 WHERE id=:questionId  ")
+    void removeAcceptedAnswer(Long questionId);
 	
-	  List<Question> findByTagsName(String tagName);
+	List<Question> findByTagsName(String tagName);
 
 }

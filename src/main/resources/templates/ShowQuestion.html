@@ -207,9 +207,14 @@
 	<br>
 	<h2 style="align-self:flex-start;margin-left: 375px;">Answers</h2>
 	<div class="answer" th:each="answer:${anslist}">
+
 		<span>Answered on 22/10/2023</span>&nbsp;&nbsp;<span>Answered By: Harsh</span>
 		<p th:text="${answer.content}"></p>
 		<div class="vote-container">
+			<h1 th:if="${questions.acceptedAnswerId} eq ${answer.id}" style="color:green;">
+				<i class="bi bi-check-circle-fill"></i>
+			</h1>
+			&nbsp;&nbsp;
 			<button class="vote-button" id="upvote">
 				<h2><i class="bi bi-caret-up-fill"></i></h2>
 			</button>
@@ -230,6 +235,18 @@
 
 				<input type="submit" value="update"/>
 			</form>
+			&nbsp;&nbsp;
+			<form th:if="${questions.acceptedAnswerId} eq -1" action="/questions/setAnswer" method="post" style="padding-left:400px;">
+				<input type="hidden" name="answerId" th:value=${answer.id} />
+				<input type="hidden" name="questionId" th:value=${questions.id} />
+				<input type="submit" value="Mark as accepted"/>
+			</form>
+			<form th:if="${questions.acceptedAnswerId} eq ${answer.id}" action="/questions/removeAnswer" method="post" style="padding-left:300px;">
+				<input type="hidden" name="answerId" th:value=${answer.id} />
+				<input type="hidden" name="questionId" th:value=${questions.id} />
+				<input type="submit" value="Unmark as accepted"/>
+			</form>
+
 		</div>
 		<br>
 		<div th:each="comment:${answer.comments}">

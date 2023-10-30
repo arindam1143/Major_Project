@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.clone.stackoverflow.repository.QuestionRepository;
+import com.clone.stackoverflow.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,8 @@ public class HomeController {
 	QuestionRepository questionRepository;
 	@Autowired
 	AnswerRepository answerRepository;
+	@Autowired
+	QuestionService questionService;
 	
 	@GetMapping("/")
 	public String open() {
@@ -36,10 +40,20 @@ public class HomeController {
 	}
 	
 	@GetMapping("/home")
-	public String Home(Model model) {
-		
-		List<Question> question=questionRepository.findAll();
-		model.addAttribute("questions",question);
+	public String Home(@RequestParam(value = "start", required = false) Integer pageNo,
+					   @RequestParam(required = false, value = "sort") String order,
+					   Model model) {
+		int pageSize = 5;
+		if (pageNo == null) {
+			pageNo = 1;
+		}
+		Page<Question> page = questionService.findPage(pageNo, pageSize, order);
+		List<Question> questions = page.getContent();
+		model.addAttribute("questions",questions);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("totalItems", page.getTotalElements());
+		model.addAttribute("sortDir", order);
 		return "HomePage";
 	}
 	@GetMapping("/question")
@@ -83,6 +97,7 @@ public class HomeController {
 	public String Search(@RequestParam("search") String searchText,Model model) {
 		Set<Question> setofQuestion= homeService.searchQuestion(searchText);
 		model.addAttribute("questions",setofQuestion);
+		model.addAttribute("test",true);
 		//System.out.println("this is home controller");
 		return "HomePage";
 	}

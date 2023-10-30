@@ -74,4 +74,16 @@ public class QuestionController {
 	        questionRepository.deleteById(questionId);
 	        return "redirect:/home";
 	    }
+
+	@PostMapping("/setAnswer")
+	public String setAcceptedQuestion(@RequestParam Long answerId,@RequestParam Long questionId) {
+		questionRepository.setAcceptedAnswer(answerId,questionId);
+		return "redirect:/question?id="+questionId;
+	}
+
+	@PostMapping("/removeAnswer")
+	public String removeAcceptedAnswer(@RequestParam Long questionId) {
+		questionRepository.removeAcceptedAnswer(questionId);
+		return "redirect:/question?id="+questionId;
+	}
 }

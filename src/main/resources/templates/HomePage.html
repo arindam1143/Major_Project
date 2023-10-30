@@ -83,13 +83,13 @@
 			font-family: Arial, sans-serif;
 		}
 
-		.navbar {
+		.navbar-main {
 			background-color: #ebe7e7;
 			overflow: hidden;
 			border-top: 5px solid orange;
 		}
 
-		.navbar a {
+		.navbar-main a {
 			float: left;
 			display: block;
 			color: #030303;
@@ -98,16 +98,16 @@
 			text-decoration: none;
 		}
 
-		.navbar a:hover {
+		.navbar-main a:hover {
 			background-color: #444;
 		}
 
-		.navbar a.logo {
+		.navbar-main a.logo {
 			font-size: 24px;
 			font-weight: bold;
 		}
 
-		.navbar a.right {
+		.navbar-main a.right {
 			float: right;
 		}
 
@@ -142,11 +142,62 @@
 		.numberQuestions {
 			font-size: 30px;
 		}
+		.navbar {
+            background-color: white;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+		.navbar button {
+            font-size: 16px;
+            color: Orange;
+            text-align: center;
+            padding: 12px 14px;
+            text-decoration: none;
+            border: 1px orange solid;
+        }
+        .navbar button:hover {
+            background-color: #fff;
+            color: #333;
+        }
+		.pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .total-rows {
+            font-size: 16px;
+        }
+
+        .page-numbers {
+            margin-top: 10px;
+        }
+
+        .page-link {
+            padding: 5px 10px;
+            margin: 0 5px;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #f3f3f3;
+            color: #333;
+        }
+
+        .page-link:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .current-page {
+            font-weight: bold;
+        }
 	</style>
 </head>
 
 <body>
-	<div class="navbar">
+	<div class="navbar-main">
 		<a href="/" class="logo">Stack Overflow</a>
 		<a href="/home">Questions</a>
 		<a href="/tags/">Tags</a>
@@ -165,12 +216,16 @@
 	</div>
 	<div class="content">
 		<h1 style="font-size: 50px;color:darkorange; text-decoration:underline;padding-left: 70vh">ALL QUESTIONS</h1>
-		<h3></h3>
-		<p class="numberQuestions">
-			<span th:text="${questions.size()}"></span>
-			<strong>questions</strong>
-		</p>
-		<h1></h1>
+		<div class="navbar">
+			<p class="numberQuestions">
+				<span th:text="${questions.size()}"></span>
+				<strong>questions</strong>
+			</p>
+			<form th:if="!${test}" th:action="'/home'" method="get">
+				<button type="submit" name="sort" value="publishedDesc">New</button>
+				<button type="submit" name="sort" value="popular">Popular</button>
+			</form>
+		</div>
 		<div class="question" th:each="question : ${questions}">
 			<h2><a th:href="@{'/question?id=' + ${question.id}}" th:text="${question.title}"></a></h2>
 			<p th:text="${question.content}"></p>
@@ -188,6 +243,15 @@
 				<strong>Answers</strong>
 				<span th:text="${question.answers.size()}"></span>
 			</p>
+			<span th:text="${question.view}+' views'"></span>
+		</div>
+	</div>
+	<div th:if="${totalPages > 1}" class="pagination-container">
+		<div class="page-numbers">
+        <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${pageNo != i}" th:href="@{'/home?start=' + ${i} +  '&sort=' + ${sortDir} }" class="page-link">[[${i}]]</a>
+            <span th:unless="${pageNo != i}" class="current-page">[[${i}]]</span>
+        </span>
 		</div>
 	</div>
 </body>

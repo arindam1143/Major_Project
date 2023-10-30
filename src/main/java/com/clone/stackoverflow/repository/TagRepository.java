@@ -24,11 +24,4 @@ public interface TagRepository extends JpaRepository<Tag,Long> {
     @Query("SELECT t FROM Tag t WHERE (:query IS NULL OR lower( t.name) LIKE %:query%)")
     Page<Tag> searchTags(@Param("query") String searchQuery, Pageable page);
 
-    @Query("SELECT t FROM Tag t " +
-            "LEFT JOIN t.questions q "+
-            "WHERE (:query IS NULL OR lower( t.name) LIKE %:query%) "+
-            "GROUP BY t.id "+
-            "ORDER BY COUNT(t) DESC"
-    )
-    Page<Tag> searchTagsByPopularity(@Param("query") String searchQuery, Pageable page);
 }
