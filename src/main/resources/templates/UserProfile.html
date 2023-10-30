@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .infoAccountDiv,.emailMobileDiv{
+            width:100%;
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+        .infoDiv,.connectedAccountDiv,.emailDiv,.mobileDiv{
+            width:90%;
+        }
+        .infoBtn:hover{
+            background-color: rgba(0,0,0,.03);
+        }
+    </style>
+   
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <div  style="width: 100%;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position:fixed;z-index: 1;background-color: white;">
+        <div class="container" style="width:60%">
+            <div style="display:grid;grid-template-columns: 20% 40% 50%; padding: 10px;">
+                <div>Logo</div>
+                <div><input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="border-radius: 20px;"></div>
+                <div style="display: flex;justify-content: center;align-items: center;"><button class="btn" style="width:40px;height:40px;border: 1px solid gray;border-radius: 50%;margin-right: 10px;"></button>
+                <button class="btn" style="width:40px;height:40px;border: 1px solid gray;border-radius: 50%;margin-right: 10px;"></button>
+                <button class="btn" style="width:40px;height:40px;border: 1px solid gray;border-radius: 50%;"></button></div>
+            </div>
+            <div style="display:grid;grid-template-columns: 15% 15% 15% 15% 15%; padding: 20px;">
+                <div  style="display: flex;margin-right: 10px;align-items: center;"><button class="btn" style="border: 1px solid black;border-radius: 20px;">Notifications</button></div>
+                <div  style="display: flex;margin-right: 10px;align-items: center;"><button class="btn" style="border: 1px solid black;border-radius: 20px;">Messages</button></div>
+                <div  style="display: flex;margin-right: 10px;align-items: center;"><button class="btn" style="border: 1px solid black;border-radius: 20px;">User</button></div>
+                <div  style="display: flex;margin-right: 10px;align-items: center;"><button class="btn" style="border: 1px solid black;border-radius: 20px;">User</button></div>
+                <div  style="display: flex;margin-right: 10px;align-items: center;"><button class="btn" style="border: 1px solid black;border-radius: 20px;">User</button></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" style="position: absolute;width: 60%;top:160px;margin-left: 20%;z-index: -1">
+        <div class="accountImageDiv" style="display: grid;grid-template-columns: 110px 70%">
+            <div >
+              <!--  <div style="width: 100px;height: 100px; border-radius: 50%;background-color: greenyellow;color: white;display: flex;justify-content: center;align-items: center;font-size: 30px;" th:text="${user.getName().charAt(0)+''.toUpperCase()}"></div>-->
+            </div>
+            <div>
+               <!-- <p th:text="${user.name}"></p>-->
+                <a th:href="@{/account}" style="text-decoration: none;"><p>Go to account -></p></a>
+            </div>
+        </div>
+        <div class="infoAccountDiv">
+            <div class="infoDiv card">
+                <div class="card-header" style="font-size: 18px; font-weight: bold;">
+                    Info
+                  </div>
+                  <div class="card-body">
+                 <!--   <p class="card-text"><i class="fa fa-user-o" style="margin-right: 5px;"></i><span th:text="${user.name}"></span></p>-->
+                    <p class="card-text"><i class="fa fa-at" aria-hidden="true" style="font-size: 20px;color: black;margin-right: 5px;"></i>(Name)</p>
+                    <p class="card-text"><i class="fa fa-envelope" aria-hidden="true" style="font-size: 20px;color: black;margin-right: 5px;"></i> email <small>Email</small></p>
+                  </div>
+                  <div class="card-footer">
+                    <form th:action="@{/account/logout}" method="post" style="display: inline;">
+                    <button class="btn infoBtn" style="font-size: 15px;color:#DC5519">LOGOUT</button>
+                    </form>
+                  </div>
+            </div>
+            <div class="connectedAccountDiv card" style="height: 150px;">
+                <div class="card-header" style="font-size: 18px; font-weight: bold;">
+                    Connected accounts
+                  </div>
+                  <div class="card-body" >
+                    <hr>
+                    <div style="display: flex;justify-content: space-evenly;">
+                        <a href="#"><img th:src="@{/images/google.png}" style="border-radius: 50%;" /></a>
+                        <a><img src="/images/github.png" style="border-radius: 50%;" /></a>
+                        <a><img src="/images/linkedin.png" style="width: 40px;height: 40px; border-radius: 50%;" /></a>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="emailMobileDiv" style="margin-top: 30px;">
+            <div class="emailDiv card">
+                <div class="card-header" style="font-size: 18px; font-weight: bold;">
+                    All Action
+                  </div>
+                  <div class="card-body">
+                   <!-- <span style="margin-right: 5px;">1.</span><input type="radio" class="form-check-input" style="margin-right: 5px;"/><span th:text="${user.primaryEmail}"><img src="/images/tick.png" /></span>-->
+                    <hr>
+                    <button class="btn infoBtn" style="font-size: 15px;color:#19B3DC">All</button>
+                    <button class="btn infoBtn" style="font-size: 15px;color:#DC5519">Posts</button>
+                  </div>
+            </div>
+            <div class="mobileDiv card" style="height: 150px;">
+                <div class="card-header" style="font-size: 18px; font-weight: bold;">
+                    Comments
+                  </div>
+                  <div class="card-body">
+                    <hr>
+                    <button class="btn infoBtn" style="font-size: 15px;color:#DC5519">comment</button>
+                  </div>
+            </div>
+        </div>
+       
+        
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

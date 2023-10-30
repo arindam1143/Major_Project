@@ -32,7 +32,7 @@
         }
 
         textarea {
-            width: 90%;
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -52,13 +52,13 @@
 </head>
 <body>
     <div class="container">
-        <h2>Update Your Answer</h2>
+        <h2>Edit Your Comment</h2>
         <div class="answer-form">
-            <form th:action="@{/saveupdate}" method="post">
-			<textarea name="answer" id="answer" rows="6" placeholder="Write your answer here" th:text="${answer.content}"></textarea>
-			<input type="hidden" name="id" th:value=${answer.id} />
-			
-			<button type="submit">update Your Answer</button>
+            <form th:action="@{/comment/update}" method="post">
+			<textarea name="commentContent" rows="6" placeholder="Write your answer here" th:text="${comment.content}"></textarea>
+			<input type="hidden" name="id" th:value=${comment.id} />
+			<input type="hidden" name="id" th:value=${comment.id} />
+			<button type="submit">Save comment</button>
 		</form>
         </div>
     </div>

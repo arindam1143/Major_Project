@@ -35,6 +35,10 @@ public class HomeController {
 	public String open() {
 		return "Home";
 	}
+	@GetMapping("/user")
+	public String UserProfile() {
+		return "UserProfile";
+	}
 	
 	@GetMapping("/home")
 	public String Home(Model model) {

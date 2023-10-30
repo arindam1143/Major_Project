@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -57,9 +58,47 @@ public class QuestionController {
 	        return "Question";
 	    }
 
-	    @GetMapping("/delete")
-	    public String deleteQuestion(@RequestParam("id") Long id){
+	    @PostMapping("/deletequestion")
+	    public String deleteQuestion(@RequestParam("id") Long id,Model model){
 	        questionRepository.deleteById(id);
-	        return "redirect:/question?id="+id;
+	        List<Question> question=questionRepository.findAll();
+			model.addAttribute("questions",question);
+			return "redirect:/home";
+	    }
+	    
+	    @PostMapping("/updatequestion")
+	    public String UpdateQuestion(@RequestParam("id") Long id,Model model) {
+	    	Question question=questionRepository.findById(id).get();
+	    	model.addAttribute("question", question);
+	    	return "UpdateQuestion"; 
+	    }
+	    
+	    @PostMapping("/saveupdatequestion")
+	    public String SaveUpdateQuestion(
+	    		@RequestParam("question") String question,
+	    		@RequestParam("id") Long id,Model model) {
+	    	Question preQuestion =questionRepository.findById(id).get();
+	    	preQuestion.setContent(question);
+	    	questionRepository.save(preQuestion);
+	    	List<Question> questions=questionRepository.findAll();
+			model.addAttribute("questions",questions);
+			return "redirect:/home";
+	    
+	    }
+	    @PostMapping("/update")
+		public String updateQuestionForm(@RequestParam Long questionId,Model model){
+			Question question = questionRepository.findById(questionId).get();
+			StringBuilder tagString=new StringBuilder("");
+			question.getTags().forEach(tag->{tagString.append(tag.getName()+",");});
+			model.addAttribute("updateQuestion", question);
+			model.addAttribute("tagString", tagString);
+	        model.addAttribute("tagList",tagRepository.findAllTagNames());
+			return "UpdateQuestion";
+		}
+
+	    @PostMapping("/delete")
+	    public String deleteQuestion(@RequestParam Long questionId){
+	        questionRepository.deleteById(questionId);
+	        return "redirect:/home";
 	    }
 }

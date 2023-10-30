@@ -150,7 +150,7 @@
 		<a href="/" class="logo">Stack Overflow</a>
 		<a href="/home">Questions</a>
 		<a href="/tags/">Tags</a>
-		<a href="#">Users</a>
+		<a href="/user">Users</a>
 		<form th:action="@{/search}" method="get">
 		<div class="search-container">
 			<!--<input type="text" placeholder="Search...">
@@ -174,7 +174,20 @@
 		<div class="question" th:each="question : ${questions}">
 			<h2><a th:href="@{'/question?id=' + ${question.id}}" th:text="${question.title}"></a></h2>
 			<p th:text="${question.content}"></p>
+			<!--<form th:action="@{/questions/updatequestion}" method="post">
+				<input type="hidden" name="id" th:value=${question.id} />
+				
+
+				<input type="submit" value="Update"/>
+			</form>-->
+			<br>
+			<!--<form th:action="@{/questions/deletequestion}" method="post">
+				<input type="hidden" name="id" th:value=${question.id} />
+
+				<input type="submit" value="Delete"/>
+			</form>-->
 			<form>
+				
 				<p><strong>Tags:</strong>
 					<span th:if="${question.tags}">
 						<span th:each="tag : ${question.tags}">
