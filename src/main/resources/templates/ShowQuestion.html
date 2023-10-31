@@ -169,13 +169,19 @@
 		<br>
 		<p th:text="${questions.content}"></p>
 		<div class="vote-container">
-			<button class="vote-button" id="upvote">
-				<h2><i class="bi bi-caret-up-fill"></i></h2>
-			</button>
-			<span class="vote-count" id="vote-count">0</span>
+			<form th:action="@{'/questions/upvote/' + ${questions.id}}" method="post">
+				<button class="vote-button" id="upvote">
+					<h2><i class="bi bi-caret-up-fill"></i></h2>
+				</button>
+			</form>
+			<p style="font-size: 25px">
+				<span   th:text="${questions.upVote - questions.downVote}"></span>
+			</p>
+			<form th:action="@{'/questions/downvote/' + ${questions.id}}" method="post">
 			<button class="vote-button" id="downvote">
 				<h2><i class="bi bi-caret-down-fill"></i></h2>
 			</button>&nbsp;&nbsp;
+			</form>
 			<form action="questions/delete" method="post">
 				<input type="hidden" name="questionId" th:value=${questions.id} />
 				<input type="submit" value="Delete"/>
@@ -215,13 +221,19 @@
 				<i class="bi bi-check-circle-fill"></i>
 			</h1>
 			&nbsp;&nbsp;
-			<button class="vote-button" id="upvote">
-				<h2><i class="bi bi-caret-up-fill"></i></h2>
-			</button>
-			<span class="vote-count" id="vote-count">0</span>
-			<button class="vote-button" id="downvote">
-				<h2><i class="bi bi-caret-down-fill"></i></h2>
-			</button>&nbsp;&nbsp;
+			<form th:action="@{'/upvoteAns/' +${answer.id}+'/' +${questions.id}}" method="post">
+				<button class="vote-button" id="upvote">
+					<h2><i class="bi bi-caret-up-fill"></i></h2>
+				</button>
+			</form>
+			<p style="font-size: 25px">
+				<span   th:text="${answer.upVote - answer.downVote}"></span>
+			</p>
+			<form th:action="@{'/downvoteAns/' +${answer.id}+'/'+ ${questions.id}}" method="post">
+				<button class="vote-button" id="downvote">
+					<h2><i class="bi bi-caret-down-fill"></i></h2>
+				</button>&nbsp;&nbsp;
+			</form>
 			<form action="/deleteans" method="post">
 				<input type="hidden" name="id" th:value=${answer.id} />
 				<input type="hidden" name="qid" th:value=${questions.id} />

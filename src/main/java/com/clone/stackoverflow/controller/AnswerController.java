@@ -6,6 +6,8 @@ import com.clone.stackoverflow.repository.AnswerRepository;
 import com.clone.stackoverflow.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,6 +55,27 @@ public class AnswerController {
 		answer.setContent(updateanswer);
 		answerRepository.save(answer);
 		return "redirect:/question?id="+answer.getQuestion().getId();
+	}
+
+	@PostMapping("/upvoteAns/{answerId}/{questionId}")
+	public String upvoteAnswer(@PathVariable Long answerId,@PathVariable Long questionId) {
+		Answer answer=answerRepository.findById(answerId).get();
+			answer.setUpVote(answer.getUpVote() + 1);
+			answerRepository.save(answer);
+		return "redirect:/question?id="+questionId;
+	}
+	@PostMapping("/downvoteAns/{answerId}/{questionId}")
+	public String downVoteAnswer(@PathVariable Long answerId,@PathVariable Long questionId) {
+		Answer answer=answerRepository.findById(answerId).get();
+			answer.setDownVote(answer.getDownVote() + 1);
+			answerRepository.save(answer);
+		return "redirect:/question?id="+questionId;
+	}
+
+	@GetMapping("/delete/{questionId}")
+	public String deleteQuestion(@PathVariable Long questionId){
+		questionRepository.deleteById(questionId);
+		return "Questions";
 	}
 
 }

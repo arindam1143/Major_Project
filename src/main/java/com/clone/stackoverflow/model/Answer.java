@@ -22,6 +22,9 @@ public class Answer {
 	@JoinColumn(name = "question_id")
 	private Question question;
 
+	private Long upVote;
+	private Long downVote;
+
 	@OneToMany(mappedBy = "answer")
 	private List<Comment> comments;
 
@@ -72,6 +75,22 @@ public class Answer {
 		return question;
 	}
 
+	public Long getUpVote() {
+		return upVote;
+	}
+
+	public void setUpVote(Long upVote) {
+		this.upVote = upVote;
+	}
+
+	public Long getDownVote() {
+		return downVote;
+	}
+
+	public void setDownVote(Long downVote) {
+		this.downVote = downVote;
+	}
+
 	public void setQuestion(Question question) {
 		this.question = question;
 	}
@@ -87,6 +106,8 @@ public class Answer {
 	@PrePersist
 	public void prePersist() {
 		createdOn = LocalDateTime.now();
-	}
+		upVote=0L;
+		downVote=0L;
+		}
 
 }

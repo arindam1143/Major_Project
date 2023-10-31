@@ -215,7 +215,7 @@
 		<a href="/questions/ask" class="right">Ask Question</a>
 	</div>
 	<div class="content">
-		<h1 style="font-size: 50px;color:darkorange; text-decoration:underline;padding-left: 70vh">ALL QUESTIONS</h1>
+		<h2 style="font-size: 50px;color:darkorange; text-decoration:underline;padding-left: 70vh">ALL QUESTIONS</h2>
 		<div class="navbar">
 			<p class="numberQuestions">
 				<span th:text="${questions.size()}"></span>
@@ -233,7 +233,7 @@
 				<p><strong>Tags:</strong>
 					<span th:if="${question.tags}">
 						<span th:each="tag : ${question.tags}">
-							<a th:href="@{'/tags/' +  ${tag.name}}"> <span th:text="${tag.name}"></span></a>
+							<a style="text-transform: uppercase" class ="tagsName" th:href="@{'/tags/' +  ${tag.name}}"> <span style="text-transform: uppercase" class="tagsName" th:text="${tag.name}"></span></a>
 						</span>
 					</span>
 					<span th:unless="${question.tags}">No Tags</span>

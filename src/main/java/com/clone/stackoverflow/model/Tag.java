@@ -17,9 +17,16 @@ public class Tag {
 	private Long questionCount=0L;
 	private LocalDate publishedDate = LocalDate.now();
 
-
 	public LocalDate getPublishedDate() {
 		return publishedDate;
+	}
+
+	public Long getQuestionCount() {
+		return questionCount;
+	}
+
+	public void setQuestionCount(Long questionCount) {
+		this.questionCount = questionCount;
 	}
 
 	public void setPublishedDate(LocalDate publishedDate) {
@@ -35,14 +42,6 @@ public class Tag {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getQuestionCount() {
-		return questionCount;
-	}
-
-	public void setQuestionCount(Long questionCount) {
-		this.questionCount = questionCount;
 	}
 
 	public String getName() {

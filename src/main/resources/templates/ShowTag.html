@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stack Overflow</title>
+  <style>
+    .user-buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-buttons a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .left-sidebar {
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .left-sidebar button {
+      background-color: #0077cc;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      margin: 10px 0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+
+    }
+
+    .question {
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .question h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .question p {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .tagsName {
+      background-color:cornflowerblue;
+      font-size: 16px;
+      color: white;
+      margin:3px;
+    }
+    .question a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+
+    .question a:hover {
+      text-decoration: underline;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #ebe7e7;
+      overflow: hidden;
+      border-top: 5px solid orange;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: #030303;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .navbar a:hover {
+      background-color: #444;
+    }
+
+    .navbar a.logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .navbar a.right {
+      float: right;
+    }
+
+    .search-container {
+      float: left;
+    }
+
+    .search-container {
+      display: flex;
+      width: 50%;
+    }
+
+    .search-container input[type="text"] {
+      padding: 10px;
+      margin-top: 10px;
+      margin-right: 10px;
+      margin-left: 20px;
+      border: none;
+      width: 100%;
+    }
+
+    .search-container button {
+      display: inline;
+      padding: 10px;
+      margin-top: 10px;
+      background: #0077cc;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .numberQuestions {
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="navbar">
+  <a href="/" class="logo">Stack Overflow</a>
+  <a href="/home">Questions</a>
+  <a href="/tags/">Tags</a>
+  <a href="#">Users</a>
+  <form th:action="@{/search}" method="get">
+    <div class="search-container">
+      <!--<input type="text" placeholder="Search...">
+  <button type="submit">Search</button>-->
+
+      <input type="text" name="search" placeholder="Search...">
+      <button type="submit">Search</button>
+
+    </div>
+  </form>
+  <a href="/questions/ask" class="right">Ask Question</a>
+</div>
+<div class="content">
+
+  <p style="font-size: 40px">All Questions related to
+  <span style="font-size: 50px;color:darkorange; text-decoration:underline; text-transform: uppercase"  th:text="${name}"></span>
+    Tag.
+  </p>
+  <h3></h3>
+  <p class="numberQuestions">
+    <span th:text="${questions.size()}"></span>
+    <strong>questions</strong>
+  </p>
+  <h1></h1>
+  <div class="question" th:each="question : ${questions}">
+    <h2><a th:href="@{'/question?id=' + ${question.id}}" th:text="${question.title}"></a></h2>
+    <p th:text="${question.content}"></p>
+    <form>
+      <p ><strong>Tags:</strong>
+        <span th:if="${question.tags}">
+						<span th:each="tag : ${question.tags}">
+							<a style="text-transform: uppercase" class ="tagsName" th:href="@{'/tags/' +  ${tag.name}}"> <span   style="text-transform: uppercase" class="tagsName" th:text="${tag.name}"></span></a>
+						</span>
+					</span>
+        <span th:unless="${question.tags}">No Tags</span>
+      </p>
+    </form>
+    <p>
+      <strong>Answers</strong>
+      <span th:text="${question.answers.size()}"></span>
+    </p>
+  </div>
+</div>
+</body>
+
+</html>

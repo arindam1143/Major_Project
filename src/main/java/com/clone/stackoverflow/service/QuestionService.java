@@ -39,6 +39,12 @@ public class QuestionService {
         }
     }
 
+    public Optional<Question> findQuestion(Long id){
+        return questionRepository.findById(id);
+
+    }
+
+
 	public Question addTag(Question question)
     {
         return questionRepository.save(question);
@@ -56,4 +62,9 @@ public class QuestionService {
 //
         return questionRepository.findAll(pageable);
     }
+
+    public  Long setUpVote(Question question){
+        return question.getUpVote()+1;
+    }
+
 }

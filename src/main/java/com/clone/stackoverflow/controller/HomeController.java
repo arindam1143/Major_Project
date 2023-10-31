@@ -112,10 +112,9 @@ public class HomeController {
 		ansobj.setQuestion(question);
 		answerRepository.save(ansobj);
 		model.addAttribute("answer",ansobj);
-		
+
 		return "redirect:/question?id="+id;
 	}
-	
 	
 
 }
