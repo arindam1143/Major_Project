@@ -13,5 +13,8 @@ import com.clone.stackoverflow.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("SELECT u.questions FROM User u WHERE LOWER(u.username) LIKE CONCAT('%', LOWER(:searchText), '%')")
     public List<Question> searchByName(@Param("searchText") String searchText);
+	
+	@Query ("select u from User u where u.email= :username")
+	User getUserByUserName(String username);
 
 }

@@ -2,13 +2,16 @@ package com.clone.stackoverflow.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="Users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +19,8 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
+	@Column(name="roles")
+    private String roles = "simpleUser";
 
 	@OneToMany(mappedBy = "user")
 	private List<Question> questions;
@@ -81,6 +86,11 @@ public class User {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public String getRoles() {
+		
+		return roles;
 	}
 
 	

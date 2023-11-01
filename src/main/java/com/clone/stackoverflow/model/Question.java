@@ -30,6 +30,8 @@ public class Question {
     private Long downVote;
 	@Column(name = "created_on")
 	private LocalDateTime createdOn;
+	@Column(name = "accepted_answer_id")
+	private Long acceptedAnswerId;
 
     @ManyToOne
 	@JoinColumn(name = "user_id")
@@ -48,6 +50,14 @@ public class Question {
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
+
+	public Long getAcceptedAnswerId() {
+		return acceptedAnswerId;
+	}
+
+	public void setAcceptedAnswerId(Long acceptedAnswerId) {
+		this.acceptedAnswerId = acceptedAnswerId;
+	}
 
 	public List<Comment> getComments() {
 		return comments;
@@ -143,6 +153,7 @@ public class Question {
 		view=0L;
 		upVote=0L;
 		downVote=0L;
+		acceptedAnswerId=-1L;
 	}
    
 }

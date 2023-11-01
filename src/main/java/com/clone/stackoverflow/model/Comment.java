@@ -32,7 +32,7 @@ public class Comment {
     private Question question;
 
 	@Column(name = "created_on")
-	private LocalDateTime createdOn;
+	private LocalDateTime createdOn; 
 
 	public Question getQuestion() {
 		return question;
@@ -71,7 +71,7 @@ public class Comment {
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.user = user; 
 	}
 
 	public Answer getAnswer() {

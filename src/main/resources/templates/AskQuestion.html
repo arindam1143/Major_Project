@@ -100,7 +100,7 @@
         <a href="/home" class="logo">Stack Overflow</a>
         <a href="/home">Questions</a>
         <a href="/tag">Tags</a>
-        <a href="#">Users</a>
+        <a href="/user">Users</a>
         <div class="search-container">
             <input type="text" placeholder="Search...">
             <button type="submit">Search</button>
@@ -109,7 +109,7 @@
     </div>
     <div class="container">
         <h1>Ask a Question</h1>
-        <form action="/questions/create" method="post" autocomplete="off">
+        <form th:action="@{/questions/create}" method="post" autocomplete="off">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" placeholder="Enter your question title" required>
 

@@ -4,12 +4,16 @@ import org.springframework.stereotype.Controller;
 
 import com.clone.stackoverflow.Repository.QuestionRepository;
 import com.clone.stackoverflow.Repository.TagRepository;
+import com.clone.stackoverflow.Repository.UserRepository;
 import com.clone.stackoverflow.model.Question;
 import com.clone.stackoverflow.model.Tag;
+import com.clone.stackoverflow.model.User;
 import com.clone.stackoverflow.service.QuestionService;
 import com.clone.stackoverflow.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +36,8 @@ public class QuestionController {
 	    
 	    @Autowired
 	    private TagService tagservice;
+	    @Autowired
+	    UserRepository userRepository;
 
 	    @GetMapping("/ask")
 	    public String displayQuestionForm(Model model) {
@@ -44,7 +50,11 @@ public class QuestionController {
 //	    	Set<Tag> tagsValue = Arrays.stream(tagString.split(",")).map(tagName -> tagService.saveTag(tagName.trim()))
 //	                .collect(Collectors.toSet());
 //	        question.setTags(tagsValue);
-	    	Question savedQuestion =questionService.createQuestion(question, tagString);
+	    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			User author = userRepository.getUserByUserName(username);
+			model.addAttribute("author",author);
+	    	Question savedQuestion =questionService.createQuestion(question, tagString,author);
 	        model.addAttribute("questions", savedQuestion);
 	         
 	        return "redirect:/question?id="+savedQuestion.getId();
@@ -101,4 +111,24 @@ public class QuestionController {
 	        questionRepository.deleteById(questionId);
 	        return "redirect:/home";
 	    }
+	    @PostMapping("/setAnswer")
+		public String setAcceptedQuestion(@RequestParam Long answerId,@RequestParam Long questionId,Model model) {
+	    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			User author = userRepository.getUserByUserName(username);
+			model.addAttribute("author",author);
+	    	//System.out.println("QuestionController.setAcceptedQuestion()");
+			questionRepository.setAcceptedAnswer(answerId,questionId);
+			return "redirect:/question?id="+questionId;
+		}
+
+		@PostMapping("/removeAnswer")
+		public String removeAcceptedAnswer(@RequestParam Long questionId,Model model) {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			User author = userRepository.getUserByUserName(username);
+			model.addAttribute("author",author);
+			questionRepository.removeAcceptedAnswer(questionId);
+			return "redirect:/question?id="+questionId;
+		}
 }

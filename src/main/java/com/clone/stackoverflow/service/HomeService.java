@@ -23,7 +23,7 @@ public class HomeService {
 	
 	public Set<Question> searchQuestion(String searchText) {
 		String[] searchEle = searchText.split(" ");
-		System.out.println("this is home service");
+//		System.out.println("this is home service");
 		Set<Question> questions = new HashSet<>();
 		for (String ele : searchEle) {
 			List<Question> namePosts=userRepository.searchByName(ele);

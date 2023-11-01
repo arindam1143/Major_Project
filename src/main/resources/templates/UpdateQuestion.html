@@ -105,12 +105,12 @@
             <input type="text" placeholder="Search...">
             <button type="submit">Search</button>
         </div>
-        <a href="#" class="right">Ask Question</a>
+        <a href="" class="right">Ask Question</a>
     </div>
 
     <div class="container" th:if="${updateQuestion}">
         <h1>Ask a Question</h1>
-        <form action="/questions/create" method="post" autocomplete="off">
+        <form th:action="@{/questions/create}" method="post" autocomplete="off">
             <input type="hidden" name="id" th:value="${updateQuestion.id}">
             <label>Title:</label>
             <input type="text"  name="title" th:value="${updateQuestion.title}">

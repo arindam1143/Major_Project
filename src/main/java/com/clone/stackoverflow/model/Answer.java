@@ -80,4 +80,14 @@ public class Answer {
 		createdOn = LocalDateTime.now();
 	}
 
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+	
+	
+
 }
